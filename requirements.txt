@@ -3,4 +3,4 @@ django
 Pillow
 django-widget-tweaks
 whitenoise
-psycopg2
+psycopg2-binary
