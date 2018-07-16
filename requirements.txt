@@ -1,6 +1,0 @@
-gunicorn
-django
-Pillow
-django-widget-tweaks
-whitenoise
-psycopg2-binary

@@ -1,0 +1,225 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+.st-logo {display: none}
+.nofocus:focus {
+    outline-style: none;
+}
+
+.dropdown-toggle.notificon::after {
+display: none;
+}
+
+.post-user-img {
+    width: 35px;
+}
+.post-username {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+}
+.post-since-time {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    padding: 0;
+    margin: 0;
+}
+.post-front-img {
+    max-height: 720px;
+}
+
+.post-card_link:hover {
+    text-decoration: None;
+}
+.post-comment-text {
+    font-size: 15px;
+}
+
+@media only screen and (min-width:720px) { /*medium*/
+    .post-card-mw {
+        max-width: 75vw;
+    }
+    .post-comment-text {
+        font-size: 18px;
+    }
+}
+@media only screen and (min-width:992px) { /*large*/
+    .post-card-mw {
+        max-width: 50vw;
+    }
+}
+@media only screen and (min-width:1140px) { /*xlarge*/
+    .post-card-mw {
+        max-width: 40vw;
+    }
+}
+.link-no-style{color: black;}
+
+/* navbar */
+
+@media only screen and (min-width:720px) {
+    .w-md-50 {width:50%;}
+}
+
+/* login/signup html */
+.bg-1 {
+    background: url('/static/registration/imgs/bg-sm.jpg');
+    background-size: cover;
+}
+@media only screen and (min-width: 992px) {
+    .bg-1 {
+        background: url('/static/registration/imgs/bg.jpg');
+        background-size: cover;
+    } 
+}
+.bg {
+    height: 100vh;
+}
+
+
+/* detail view user */
+.banner_container{
+    position: fixed;
+    width: 100%;
+    z-index: -1;
+}
+
+.user_container{
+    position: relative;
+    top:30vw;
+    
+}
+
+@media (min-width: 768px) { 
+    .banner_container{
+        position: fixed;
+        width: 90%;
+        left: 5%;
+        z-index: -1;
+    }
+    .user_container{
+        top:25vw;
+    }
+}
+
+@media (min-width: 992px) { 
+    .banner_container{
+        position: fixed;
+        width: 80%;
+        left: 10%;
+        z-index: -1;
+    }
+    .user_container{
+        top:20vw;
+    }
+}
+
+@media (min-width: 1200px) { 
+    .banner_container{
+        position: fixed;
+        width: 70%;
+        left: 15%;
+        z-index: -1;
+    }
+    .user_container{
+        top:15vw;
+    }
+}
+
+.banner_img {
+
+}
+
+
+.detail_bar{
+    height: 25vmin;    
+}
+
+.user_img {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    height: 100%;
+    /* bottom: 50%; */
+}
+
+/* photos.html */
+
+.photo {
+    max-width:20vw;
+    
+}
+.card-columns {
+    column-count: 2;
+}
+
+@media (min-width: 768px) { 
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 992px) {
+    .card-columns {
+        column-count: 4;
+    }
+    .head-img{
+        width: 50%;
+        float: right;
+    }
+}
+
+@media (min-width: 1200px) { 
+    .card-columns {
+        column-count: 5;
+    }
+}
+
+
+/* post card extend comment box */
+#comment-box {
+    max-height: 250px;
+    overflow-y: hidden;
+}
+
+#comment-box-opener {
+    cursor: pointer;
+}
+
+@media only screen and (max-width:720px) { /*medium*/
+    .display-4 {font-size: 2.5rem;}
+}
+
+.first-big p:first-of-type::first-letter ,.first-big div:first-of-type::first-letter {
+  float: left;
+  font-size: 3.5rem;
+  line-height: 60px;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-left: 3px;
+}
+.first-big {
+    font-family: 'Noto Serif', serif;
+    font-size: 1.2rem;
+}
+
+/* home.html */
+
+#left-bar {
+    width: 300px;
+    height:100%;
+    position: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    top: 40px;
+    z-index: 20;
+}
+#left-toggle {cursor: pointer;}
+#left-toggle:hover {color: orange}
+@media only screen and (max-width:720px) { /*medium*/
+    #left-bar {
+        width: 100%;
+    }
+}

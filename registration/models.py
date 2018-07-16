@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save, post_init
+from django.db.models.signals import post_save, post_init, pre_delete
 from django.dispatch import receiver
 from django.forms import ValidationError
+from cloudinary import models as cmodels
+import cloudinary
 
 # Create your models here.
 class Images(models.Model):
@@ -13,10 +15,14 @@ class Images(models.Model):
         ('3', 'Banner Pic')
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    img = models.ImageField()
+    img = cmodels.CloudinaryField('image')
     img_type = models.CharField(max_length=1, choices=imgType, default='1')
     def __str__(self):
-        return self.img.name
+        return self.img.public_id
+
+@receiver(pre_delete, sender=Images)
+def photo_delete(sender, instance, **kwargs):
+    cloudinary.uploader.destroy(instance.img.public_id)
 
 
 class UserExtend(models.Model):
