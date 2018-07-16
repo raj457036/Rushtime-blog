@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}
+    {{request.user}} &middot; profile
+{% endblock title %}
+{% block content %}
+{% load static %}
+    <div class="mt-3  banner_container">
+        <img src="{% static 'registration/imgs/bg.jpg' %}" class="banner_img img-fluid rounded" alt="" srcset="">
+    </div>
+    <div class="container user_container">
+        <div class="d-flex justify-content-center detail_bar">
+            <img src="
+            {% if request.user.userextend.Profile_pic.img %}
+            {{request.user.userextend.Profile_pic.img.url}}
+            {% else %}
+            {% static 'registration/imgs/user.png' %}
+            {% endif %}" 
+            class='img-thumbnail img-fluid rounded-circle user_img shadow' alt="">
+        </div>
+        <div class="text-center bg-white rounded mt-2 shadow-sm py-3">
+            <h2 class="display-4">{{request.user.get_full_name}} <a href="{% url 'registration:updateprofile' pk=request.user.pk %}" style="font-size:15px;"><i class="fas fa-cog"></i></a></h2>
+            <cite>{{user}}</cite>
+            <blockquote class="blockquote text-center">
+                <p class="mb-0">{{request.user.userextend.aboutMe}}</p>
+                <footer class="blockquote-footer">{{user}}</footer>
+            </blockquote>
+            <div class="row p-2">
+            {% if user == request.user %}
+                <div class="col-md-4">
+                    <a href="{% url 'registration:myphotos' %}" class="btn btn-block btn-outline-primary">Photos</a>
+                </div>
+                <div class="col-md-4">
+                    <a href="#" class="btn btn-block btn-outline-secondary">Followers</a>
+                </div>
+                <div class="col-md-4">
+                    <a href="#" class="btn btn-block btn-outline-success">Following</a>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+
+        <div class="bg-white rounded mt-2 shadow-sm py-3">
+            <h2 class="display-4 text-center">Recent Posts</h2>
+            {% if user == request.user %}
+                <div class="d-flex flex-column">
+                    {% for post in post_list reversed %}
+                        {% include "post/post_card.html" with post=post %}
+                    {% empty %}
+                        <p class="lead text-center">NO POSTS YET.</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+    </div>
+{% endblock content %}

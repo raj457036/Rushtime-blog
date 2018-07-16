@@ -1,0 +1,66 @@
+.post-user-img {
+    width: 35px;
+}
+.post-username {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+}
+.post-since-time {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    padding: 0;
+    margin: 0;
+}
+.post-front-img {
+    max-height: 720px;
+
+}
+
+@media only screen and (min-width:720px) { /*medium*/
+    .post-card-mw {
+        max-width: 75vw;
+    }
+}
+@media only screen and (min-width:992px) { /*large*/
+    .post-card-mw {
+        max-width: 50vw;
+    }
+}
+@media only screen and (min-width:1140px) { /*xlarge*/
+    .post-card-mw {
+        max-width: 40vw;
+    }
+}
+.link-no-style{color: black;}
+.post-comment-text {
+    font-size: 15px;
+}
+
+
+/* navbar */
+
+@media only screen and (min-width:720px) {
+    .w-md-50 {width:50%;}
+}
+
+/* login/signup html */
+.bg-1 {
+    background: url('/static/registration/imgs/bg-sm.jpg');
+    background-size: cover;
+}
+@media only screen and (min-width: 992px) {
+    .bg-1 {
+        background: url('/static/registration/imgs/bg.jpg');
+        background-size: cover;
+    } 
+}
+.bg {
+    height: 100vh;
+}
+
+.posR {
+    position: relative;
+}

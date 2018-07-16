@@ -1,0 +1,70 @@
+{% load static %}
+<div class="card border-0">
+    <div class="card-header p-1">
+        <div class="row m-0">
+            <div class="col-10"> 
+                <div class="d-flex ">
+                    <a href="
+                    {% if post.user == request.user %}
+                    {% url 'registration:myprofile' %}
+                    {% else %}
+                    {% url 'registration:userprofile' pk=post.user.pk %}
+                    {% endif %}
+                    "><img src="
+                        {% if post.user.userextend.Profile_pic.img %}
+                        {{post.user.userextend.Profile_pic.img.url}}
+                        {% else %}
+                        {% static 'registration/imgs/user.png' %}
+                        {% endif %}"
+                     alt="user" class="border post-user-img rounded-circle"></a>
+                    <div class="flex-column justify-content-start ml-2">
+                        <p class="post-username"><a href="
+                            {% if post.user == request.user %}
+                            {% url 'registration:myprofile' %}
+                            {% else %}
+                            {% url 'registration:userprofile' pk=post.user.pk %}
+                            {% endif %}"
+                     class="link-no-style">{{post.user.get_full_name}}</a> <span class="text-muted d-none d-md-inline text-capitalize">programmer by heart</span></p>
+                        <p class="post-since-time text-muted">{{post.created_on|timesince}}</p>
+                    </div>   
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-flex justify-content-end">
+                    <a href="#" class="btn btn-outline-warning btn-sm" title="Bookmark"><i class="fa fa-bookmark-o"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-1">
+        <div class="card-title h4 px-2">{{post.title}}</div>
+        <div class="card-subtitle text-muted px-2">Its just a joke</div>
+        <div class="card-text p-5">
+            <img src="{% static 'registration/imgs/demo.png' %}" alt="Its just a joke" class="img-fluid post-front-img mx-auto d-block">
+            <div class="post-text mx-2">{{post.content|safe}}</div>
+        </div>        
+    </div>
+    <!-- comment -->
+    <div class="card-footer mh-100 pb-5 px-lg-5">  
+        <div class="card-text d-flex flex-column" id="comment-box">
+            {% for c in post.comment_set.all %}
+                <span class="post-comment-text">
+                    <span class="post-username"><a href="#" class="link-no-style">{{c.who}}</a> :</span>
+                    <small class="text-muted">{{c.content}}
+                    <a href="#"><i class="fa fa-thumbs-up"></i> (34)</a>
+                    <a href="#"><i class="fa fa-comments-o"></i> (2)</a></small>
+                </span>
+            {% empty %}
+            <small class="d-block text-center text-muted">No Comments yet</small>
+            {% endfor %}
+        </div>
+        <small class="p-0 text-center d-block" id="comment-box-opener"><i class="fa fa-ellipsis-h"></i></small>
+    </div>
+    <div class="card-footer py-1 px-0 fixed-bottom bg-light">
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-sm mx-2 btn-outline-primary" title="level up"><i class="fa fa-level-up"></i> (400+)</button>
+            <button class="btn btn-sm mx-2 btn-outline-secondary" title="level down"><i class="fa fa-level-down"></i> (200+)</button>
+            <button class="btn btn-sm mx-2 btn-outline-info" title="share"><i class="fa fa-share"></i> (20+)</button>
+        </div>
+    </div>  
+</div>

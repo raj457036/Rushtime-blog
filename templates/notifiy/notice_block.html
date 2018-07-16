@@ -1,0 +1,34 @@
+{% for n in object_list %}
+<a href="
+{% if n.category == '1' %}
+    {% url 'registration:post:detail' pk=n.c_id %}?read={{n.pk}}
+{% elif n.category == '2' %}
+    #
+{% elif n.category == '3' %}
+    #
+{% endif %}
+
+" class="list-group-item list-group-item-action p-1 
+{% if not n.viewed %}
+bg-light
+{% endif %}
+
+{{extra_class}}
+">
+    <table>
+        <tr>
+            <td rowspan="2">
+            <img src="{{n.sender.userextend.Profile_pic.img.url}}" alt="" class="mx-2 post-user-img rounded-circle border">
+            </td>
+            <td class="p-0">
+            <small><b class="mb-1">{{n.sender}}</b> {{n.text}}</small>
+            </td>
+        </tr>
+        <tr>
+            <td class="p-0">
+            <small>{{n.date_time|timesince}} ago</small>
+            </td>
+        </tr>
+    </table>                    
+</a>
+{% endfor %}

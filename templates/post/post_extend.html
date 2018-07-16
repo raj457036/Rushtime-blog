@@ -1,0 +1,144 @@
+{% load static %}
+<!-- <div class="card border-0">
+    <div class="card-header p-1">
+        <div class="row m-0">
+            <div class="col-10"> 
+                <div class="d-flex ">
+                    <a href="
+                    {% if post.user == request.user %}
+                    {% url 'registration:myprofile' %}
+                    {% else %}
+                    {% url 'registration:userprofile' pk=post.user.pk %}
+                    {% endif %}
+                    "><img src="
+                        {% if post.user.userextend.Profile_pic.img %}
+                        {{post.user.userextend.Profile_pic.img.url}}
+                        {% else %}
+                        {% static 'registration/imgs/user.png' %}
+                        {% endif %}"
+                     alt="user" class="border post-user-img rounded-circle"></a>
+                    <div class="flex-column justify-content-start ml-2">
+                        <p class="post-username"><a href="
+                            {% if post.user == request.user %}
+                            {% url 'registration:myprofile' %}
+                            {% else %}
+                            {% url 'registration:userprofile' pk=post.user.pk %}
+                            {% endif %}"
+                     class="link-no-style">{{post.user.get_full_name}}</a> <span class="text-muted d-none d-md-inline text-capitalize">programmer by heart</span></p>
+                        <p class="post-since-time text-muted">{{post.created_on|timesince}}</p>
+                    </div>   
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-flex justify-content-end">
+                    <a href="#" class="btn btn-outline-warning btn-sm" title="Bookmark"><i class="fa fa-bookmark-o"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-1">
+        <div class="card-title h4 px-2">{{post.title}}</div>
+        <div class="card-subtitle text-muted px-2">Its just a joke</div>
+        <div class="card-text p-5">
+            <img src="{% static 'registration/imgs/demo.png' %}" alt="Its just a joke" class="img-fluid post-front-img mx-auto d-block">
+            <div class="post-text mx-2">{{post.content|safe}}</div>
+        </div>        
+    </div>
+    
+    <div class="card-footer mh-100 pb-5 px-lg-5">  
+        <div class="card-text d-flex flex-column" id="comment-box">
+            {% for c in post.comment_set.all %}
+                <span class="post-comment-text">
+                    <span class="post-username"><a href="#" class="link-no-style">{{c.who}}</a> :</span>
+                    <small class="text-muted">{{c.content}}
+                    <a href="#"><i class="fa fa-thumbs-up"></i> (34)</a>
+                    <a href="#"><i class="fa fa-comments-o"></i> (2)</a></small>
+                </span>
+            {% empty %}
+            <small class="d-block text-center text-muted">No Comments yet</small>
+            {% endfor %}
+        </div>
+        <small class="p-0 text-center d-block" id="comment-box-opener"><i class="fa fa-ellipsis-h"></i></small>
+    </div>
+    <div class="card-footer py-1 px-0 fixed-bottom bg-light">
+        
+    </div>  
+</div> -->
+
+
+<!-- title section -->
+<div class="mx-lg-5 px-lg-5 mx-2 row" >
+    <div class="col" >
+        <h1 class="title display-4">{{post.title}}</h1>
+        <p class="lead text-muted">{{post.sub_title}}</p>
+        <div class="card border-0" style="max-width: 18rem;">
+            <div class="card-body p-0 row">
+                    <div class="col-3 pl-4">
+                    <img src="{{post.user.userextend.Profile_pic.img.url}}" class="rounded" alt="{{post.user}}" style="max-width:40px">
+                    </div>
+                    <div class="col-9 pl-0 py-2 text-info">
+                        <small class="d-block  font-weight-light">
+                            <a href="{% if post.user == request.user %}
+                            {% url 'registration:myprofile' %}
+                            {% else %}
+                            {% url 'registration:userprofile' pk=post.user.pk %}
+                            {% endif %}">{{post.user.get_full_name}}</a> <a href="#" class="btn btn-sm btn-outline-primary py-0 ml-2">follow</a></small>
+                    <small>{{post.created_on.date}} <i class="fa fa-star" data-toggle='tooltip' title='varified' data-placement='right'></i></small>
+                    </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+
+<!-- content -->
+<div class="container mt-3 first-big">
+    {% if post.head_img %}
+    <img src="{{post.head_img.url}}" alt="" class="img-fluid rounded d-inline-block head-img">
+    {% endif %}
+    <div class="px-2">
+        {% autoescape off %}  {{post.content}} {% endautoescape %}
+    </div>
+</div>
+
+<hr>
+
+
+<!-- comment -->
+<h5 class="text-center underlined">Comments</h5>
+<div class="row mx-2">
+        <div class="pb-5 col-lg-6 offset-lg-3">  
+            <div class="card-text d-flex flex-column" id="comment-box">
+                {% for c in post.comment_set.all %}
+                    <span class="post-comment-text">
+                        <span class="post-username"><a href="#" class="link-no-style">{{c.who.get_full_name}}</a> :</span>
+                        <small class="text-muted">{{c.content|safe}}
+                        <a href="#"><i class="fa fa-thumbs-up"></i> (34)</a>
+                        <a href="#"><i class="fa fa-comments-o"></i> (2)</a></small>
+                    </span>
+                {% empty %}
+                <small class="d-block text-center text-muted">No Comments yet</small>
+                {% endfor %}
+            </div>
+            <small class="p-0 text-center d-block" id="comment-box-opener"><i class="fa fa-ellipsis-h"></i></small>
+            <div id="comment"></div>
+            <form action="{% url 'registration:post:comment' %}" method="POST" id="form-unlock" class="d-none my-1">
+            {% csrf_token %}
+            <input type="hidden" name='post' value="{{post.pk}}" >
+            <textarea name="comment" class="form-control-sm px-lg-4 form-control w-100 py-1"
+                placeholder="Write something here ..." id="comment-area"></textarea>
+            </form>
+        </div>
+</div>
+
+<!-- function btns -->
+<div class="d-flex justify-content-center bg-light py-2 fixed-bottom" >
+    <button class="btn btn-sm mx-2 btn-outline-danger rounded-circle nofocus
+    {% if request.user.id in post.all_likers %} active {% endif %}" 
+    id="like_{{post.pk}}" title="Like it" onclick="likeit({{post.pk}})"><i class="far fa-heart" title="Like it"></i></button>
+    <button class="btn btn-sm mx-2 btn-outline-primary rounded-circle" title="share"><i class="fas fa-share"></i></button> 
+    <button type="submit" class="btn btn-sm mx-2 btn-outline-info d-none" id="form-btn" title="Add Comment" form="form-unlock">
+        <span class="d-md-none"><i class="fa fa-comments-o"></i></span>
+        <span class="d-md-inline d-none">Add comment</span>
+    </button>
+</div>

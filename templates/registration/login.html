@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="container-fluid bg-1 bg">
+    <div class="row ">
+        <div class="col-lg-8 d-none d-lg-block">
+            {% if logged_out %}
+            <div class="alert alert-success" role="alert">{{logged_out}}</div>
+            {% endif %}
+        </div>
+        <div class="col-lg-4 col-12 ">
+            <div class="card shadow mt-5">
+                <div class="card-body">
+                    <div class="card-title h3">Login here</div>
+                    <hr>
+                    <div class="card-text">
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">{{form.non_field_errors}}</div>
+                        {% endif %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% for field in form %}
+                            <div class="form-group">
+                                {{field.label_tag}}
+                                {{field}}
+                                {% if field.help_text %}
+                                <small class="form-text text-muted">{{field.help_text}}</small>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="Remember">
+                                <label class="form-check-label" for="Remember">Remember me</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">Login</button>
+                            or 
+                            <a class="btn btn-secondary btn-sm" href="{% url 'user_signup' %}">Signup</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

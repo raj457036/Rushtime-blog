@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% block op_style %}
+<link rel="stylesheet" href="{% static 'css/Blackedit.css' %}">
+{% endblock op_style %}
+
+{% block title %}
+Create a new Post &middot; {{request.user}}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h3 class="text-center mt-5">Create a Post</h3>
+    <form action="" method="post" id="post_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            {% if forloop.counter == 3 %}
+            <div class="form-group">
+                {{field.label_tag}}
+                {% render_field field|append_attr:"class:form-control form-control-sm"%}
+            </div>
+            <div class="form-group">
+                <div id="editor" class="border d-block"></div>
+            </div>
+            {% elif forloop.counter == 4 %}
+            <div hidden>
+                {{field}}
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{field.label_tag}}
+                {% render_field field|append_attr:"class:form-control form-control-sm"%}
+            </div>
+            {% endif %}
+        {% endfor %}
+        <input class="btn btn-primary" type="submit" value="Create" />
+    </form>
+    
+</div>
+{% endblock content %}
+
+{% block op_script %}
+<script src="{% static 'js/Blackedit.js' %}"></script>
+<script>
+    var ed = new Editor('editor','id_content');
+    ed.init();
+    
+</script>
+{% endblock op_script %}

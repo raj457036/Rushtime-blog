@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}
+Update Profile &middot; {{request.user}}
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    {{form.as_p}}
+</div>
+{% endblock content %}

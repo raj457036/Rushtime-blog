@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Notification (34) &middot; Blog{% endblock title %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h4>Your Notifications</h4>
+        <hr>
+        <div class="list-group">
+            {% include "notifiy/notice_block.html" %}
+        </div>
+    </div>
+{% endblock content %}

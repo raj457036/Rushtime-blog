@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}
+{{post.title}} &middot; {{post.user}} : Blog
+{% endblock title %}
+
+{% block content %}
+<div class="mt-5 container-fluid px-0">
+    {% include "post/post_extend.html" %}
+    {{post.get_shorts}}
+</div>
+{% endblock content %}

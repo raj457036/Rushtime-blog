@@ -1,0 +1,103 @@
+{% load static %}
+<div class="card rounded-0 post-card-mw my-2 mx-auto" id="id_post_{{post.id}}">
+    <div class="card-header py-1 px-0">
+        <div class="row m-0">
+            <div class="col-10"> 
+                <div class="d-flex ">
+                    <a href="
+                    {% if post.user == request.user %}
+                    {% url 'registration:myprofile' %}
+                    {% else %}
+                    {% url 'registration:userprofile' pk=post.user.pk %}
+                    {% endif %}
+                    "><img src="
+                        {% if post.user.userextend.Profile_pic.img %}
+                        {{post.user.userextend.Profile_pic.img.url}}
+                        {% else %}
+                        {% static 'registration/imgs/user.png' %}
+                        {% endif %}"
+                     alt="user" class="border post-user-img rounded-circle"></a>
+                    <div class="flex-column justify-content-start ml-2">
+                        <p class="post-username"><a href="
+                            {% if post.user == request.user %}
+                            {% url 'registration:myprofile' %}
+                            {% else %}
+                            {% url 'registration:userprofile' pk=post.user.pk %}
+                            {% endif %}"
+                     class="link-no-style">{{post.user.get_full_name}}</a> <span class="text-muted d-none d-md-inline text-capitalize">programmer by heart</span></p>
+                        <p class="post-since-time text-muted">about {{post.created_on|timesince}} ago</p>
+                    </div>   
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-flex justify-content-end">
+                    <a href="#" class="btn btn-outline-warning btn-sm" title="Bookmark"><i class="far fa-bookmark"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'registration:post:detail' pk=post.pk %}" class="post-card_link">
+    <div class="card-body p-0">
+        <div class="card-title h3 px-2 title text-dark">{{post.title}}</div>
+        <div class="card-subtitle text-muted px-2">{{post.sub_title}}</div>
+        <div class="card-text">
+            <img src="
+            {% if post.head_img %}
+            {{post.head_img.url}}
+            {% else %}
+            {% static 'registration/imgs/bg.jpg'  %}
+            {% endif %}
+            " alt="Its just a joke" class="img-fluid post-front-img mx-auto d-block">
+        </div>
+    </a>
+        <a href="{% url 'registration:post:detail' pk=post.pk %}" class="text-center w-100 d-block border-top">...Read</a>        
+    </div>
+    <!-- comment -->
+    <!-- <div class="card-footer py-1 px-0">  
+        <div class="card-text d-flex flex-column mx-2">
+            <span class="post-comment-text">
+                <span class="post-username"><a href="#" class="link-no-style">rahul singh</a> :</span>
+                <small class="text-muted">its scary you know
+                <a href="#"><i class="fa fa-thumbs-up"></i> (34)</a>
+                <a href="#"><i class="fa fa-comments-o"></i> (2)</a></small>
+            </span>
+            <span class="post-comment-text">
+                <span class="post-username"><a href="#" class="link-no-style">Ravi kumar</a> :</span>
+                <small class="text-muted">Not so funny
+                <a href="#"><i class="fa fa-thumbs-up"></i> (34)</a>
+                <a href="#"><i class="fa fa-comments-o"></i> (2)</a></small>
+            </span>
+        </div>
+        <small class="p-0 text-center d-block"><a href="#"><i class="fa fa-ellipsis-h"></i></a></small>
+    </div> -->
+    <div class="card-footer py-1 px-0 d-flex align-items-center" style="height:30px">
+        
+        <div><button class="btn btn-sm mx-2 btn-outline-danger nofocus py-0
+            {% if request.user.id in post.all_likers %} active {% endif %}
+            " id="like_{{post.pk}}" title="Like it" onclick="likeit({{post.pk}})"><i class="far fa-heart" title="Love it"></i></button></div>
+        
+        <div><a href="{% url 'registration:post:detail' pk=post.pk %}#comment" class="btn btn-sm mx-2 btn-outline-info py-0" title="Comments"><i class="far fa-comment-alt"></i></a></div>
+        
+        <div class="dropup">
+            <button class="btn btn-sm mx-2 btn-outline-primary dropdown-toggle notificon py-0" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Share">
+                <i class="fas fa-share"></i>
+            </button>
+            <div class="dropdown-menu" style="max-width:600px" aria-labelledby="dropdownMenuButton1">
+                <div class="sharethis-inline-share-buttons dropdown-item mw-100" data-url="{% url 'registration:post:detail' pk=post.pk %}"></div>
+            </div>
+        </div>
+        <div class="dropup ml-auto">
+            <button class="btn btn-sm mx-2 btn-outline-dark dropdown-toggle notificon border-0 rounded-circle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="more">
+                <i class="fas fa-cog"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item disable" href="#">Still</a>
+                <a class="dropdown-item disable" href="#">in</a>
+                <a class="dropdown-item disable" href="#">beta</a>
+                {% if post.user == request.user and request.resolver_match.url_name == 'myprofile' %}
+                <a class="dropdown-item " href="{% url 'registration:post:delete' pk=post.pk %}"><i class="far fa-trash-alt"></i> Delete</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>  
+</div>

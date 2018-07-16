@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Photos &middot; {{user}}{% endblock title %}
+{% block content %}
+    <div class="container-fluid">
+        {% if user not in request.user.owner.all.first.fusers.all and user != request.user%}
+            <div class="mt-5">
+                <p class="lead text-center">You must follow {{user}} to see Photos. <br>
+                <a href="{% url 'registration:userprofile' pk=user.pk %}" class="btn btn-outline-info">
+                    Follow
+                </a>
+                </p>
+            </div>
+        {% else %}
+        <div class="card-columns mt-5">
+                {% for p in img_list %}
+                    <div class="card border-0">
+                        <a href="{{p.img.url}}"><img src="{{p.img.url}}" alt="" class="img-fluid img-thumbnail"></a>
+                    </div>
+                {% empty %}
+                    <div class="text-center">
+                        <p class="lead">No images yet...</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
