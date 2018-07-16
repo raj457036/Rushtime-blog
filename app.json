@@ -1,0 +1,22 @@
+{
+    "name": "RushTime blog",
+    "description": "A free, fast and all feature rich blogging site for everyone. ",
+    "image": "img.png",
+    "repository": "https://github.com/raj457036/Rushtime-blog",
+    "keywords": ["python", "django" ],
+    "addons": [ "heroku-postgresql" ],
+    "env": {
+      "SECRET_KEY": {
+        "description": "The secret key for the Django application.",
+        "generator": "secret"
+      }
+    },
+    "environments": {
+      "test": {
+        "scripts": {
+          "test-setup": "python manage.py collectstatic --noinput",
+          "test": "python manage.py test"
+        }
+      }
+    }
+  }
