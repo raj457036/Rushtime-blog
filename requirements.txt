@@ -1,3 +1,4 @@
+gunicorn
 django
 Pillow
 django-widget-tweaks
