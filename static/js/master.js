@@ -17,8 +17,16 @@ $("#comment-box-opener").click(function() {
   
   $(this).remove();
   $("#form-unlock").removeClass('d-none');
-  $("#form-btn").removeClass('d-none');
   window.scrollTo(0,document.body.scrollHeight+200);
+  
+  // comment area security
+  
+  $('#comment-area').on('keydown keyup paste cut', function(){
+    if (($(this).val()).length > 0) {
+      $("#form-btn").removeClass('d-none');
+    }
+    else { $("#form-btn").addClass('d-none'); }
+  })
 })
 
 function likeit(id) {
@@ -26,8 +34,12 @@ function likeit(id) {
       url: '/user/post/api/like/',
       method:'GET',
       data:{'post_id':id},
+      beforeSend: function(re){
+        $(`#like_${id}`).html('<i class="fas fa-spin fa-spinner"></i>')
+      },
       success: function(re) {
-          re.status ? $(`#like_${id}`).addClass('active') : $(`#like_${id}`).removeClass('active');
+        $(`#like_${id}`).html('<i class="far fa-heart" title="Love it"></i>')
+        re.status ? $(`#like_${id}`).addClass('active') : $(`#like_${id}`).removeClass('active');
       },
       error: function(re) {
           console.log('connection problem!');
@@ -43,7 +55,7 @@ $(document).ready(function(){
     $(this).toggleClass('text-warning');
   })
 
-// search bar request
+  // search bar request
   var obj = {
     start : `<div id="people_block"><h5>Peoples</h5><div class="list-group">`,
     middle: `</div><a href="#" class="d-block text-center">view all people</a><div id="post_block"><h5>Posts</h5><div class="list-group list-group-flush">`,

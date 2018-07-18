@@ -44,11 +44,13 @@
             <h2 class="display-4 text-center">Recent Posts</h2>
             {% if user == request.user %}
                 <div class="d-flex flex-column">
+                    <div class="mx-auto">
                     {% for post in post_list reversed %}
                         {% include "post/post_card.html" with post=post %}
                     {% empty %}
                         <p class="lead text-center">NO POSTS YET.</p>
                     {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         </div>

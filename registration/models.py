@@ -41,7 +41,8 @@ class UserExtend(models.Model):
         return f
 
     def get_profile_pics(self):
-        return self.images.filter(img_type = '0').order_by('-datetime') 
+        return self.images.filter(img_type='0').order_by('-datetime')
+
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

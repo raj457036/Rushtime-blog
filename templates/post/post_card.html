@@ -12,12 +12,12 @@
                     {% endif %}
                     ">
                      <div class="border post-user-img rounded-circle" 
-                        {% if post.user.userextend.get_profile_pics.first.img %}
-                        style="background-image: url('{{post.user.userextend.get_profile_pics.first.img.url}}');"
+                        {% if post.user.userextend.get_profile_pics|length > 0 %}
+                            style="background-image: url('{{post.user.userextend.get_profile_pics.first.img.url}}');"
                         {% else %}
-                        style="background-image: url("{% static 'registration/imgs/user.png' %}");"
-                        
+                            style="background-image: url('/static/registration/imgs/user.png');"
                         {% endif %}
+
                         >
                     </div>
                     
@@ -79,7 +79,7 @@
                 <i class="fas fa-cog"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item disable" href="#">Still</a>
+                <a class="dropdown-item disable" href="#"><i class="fas fa-exclamation text-danger mr-1"></i> Report</a>
                 <a class="dropdown-item disable" href="#">in</a>
                 <a class="dropdown-item disable" href="#">beta</a>
                 {% if post.user == request.user and request.resolver_match.url_name == 'myprofile' %}
