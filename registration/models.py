@@ -111,7 +111,7 @@ def check_followers(sender, instance, **kwargs):
 
 
 class Bookmarks(models.Model):
-    b_type = (('1', 'Post'),)
+    b_type = (('1', 'Post'),('2','Images'))
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bookmarks')
     bookmark_type = models.CharField(max_length=1, choices=b_type, default='1')
