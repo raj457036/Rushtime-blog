@@ -1,5 +1,5 @@
 from django.urls import path,include
-from .views import UserDetail, ProfileView, PhotosList, UpdateProfileView
+from .views import UserDetail, ProfileView, PhotosList, UpdateProfileView, BookmarkView
 
 app_name = 'registration'
 
@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:pk>/update',UpdateProfileView.as_view(),name='updateprofile'),
     path('post/',include('post.urls')),
     path('photos/',PhotosList.as_view(), name='myphotos'),
+    path('bookmark/', BookmarkView.as_view(), name='bookmark'),
 ]

@@ -11,8 +11,8 @@
     <div class="container user_container">
         <div class="d-flex justify-content-center detail_bar">
             <img src="
-            {% if profile_pic.img %}
-            {{profile_pic.img.url}}
+            {% if request.user.userextend.get_profile_pics|length > 0 %}
+            {{request.user.userextend.get_profile_pics.first.img.url}}
             {% else %}
             {% static 'registration/imgs/user.png' %}
             {% endif %}" 
@@ -27,14 +27,23 @@
             </blockquote>
             <div class="row p-2">
             {% if user == request.user %}
-                <div class="col-4">
-                    <a href="{% url 'registration:myphotos' %}" class="btn btn-block btn-outline-primary">Photos</a>
+            <div class="col-4">
+                    <a href="{% url 'registration:myphotos' %}?pk={{user.pk}}" class="btn btn-block btn-outline-primary">
+                        <i class="far fa-image"></i>
+                        <span class="d-none d-md-inline-block">Photos</span>
+                    </a>
                 </div>
                 <div class="col-4">
-                    <a href="#" class="btn btn-block btn-outline-secondary">Followers</a>
+                    <a href="{% url 'registration:bookmark' %}" class="btn btn-block btn-outline-secondary">
+                        <i class="far fa-bookmark"></i>
+                        <span class="d-none d-md-inline-block">Bookmarks</span>
+                    </a>
                 </div>
                 <div class="col-4">
-                    <a href="#" class="btn btn-block btn-outline-success">Following</a>
+                    <a href="#" class="btn btn-block btn-outline-success">
+                        <i class="far fa-newspaper"></i>
+                        <span class="d-none d-md-inline-block">Posts</span>
+                    </a>
                 </div>
             {% endif %}
             </div>

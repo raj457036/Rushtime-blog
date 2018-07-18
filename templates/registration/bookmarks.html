@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}
+Bookmarks &middot; RushTime Blogs
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid mt-5">
+        <p class="display-4">All Bookmarks</p>
+        <div class="card-columns-bookmark">
+            {% for obj in bookmarks %}
+            
+                <div class="card mb-2">
+                    <a href="{% url 'registration:post:detail' pk=obj.pk %}" class="text-muted">
+                        <div class="card-img-top bookmark-img"  
+                        {% if obj.user.userextend.get_profile_pics|length > 0 %}
+                            style="background-image: url('{{obj.head_img.url}}');"
+                        {% else %}
+                            style="background-image: url('/static/registration/imgs/user.png');"
+                        {% endif %}
+                        ></div>
+                        
+                        <div class="card-img-overlay" style="height:70px">
+                                <div class="border bookmark-user-img rounded-circle" 
+                                {% if obj.user.userextend.get_profile_pics|length > 0 %}
+                                    style="background-image: url('{{obj.user.userextend.get_profile_pics.first.img.url}}');"
+                                {% else %}
+                                    style="background-image: url('/static/registration/imgs/user.png');"
+                                {% endif %}
+                                ></div>
+                                <span class="text-white shadow-sm">{{obj.user.get_full_name}}</span>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title d-flex">{{obj.title}} 
+                            <button onclick="bookmark({{obj.id}})" class="btn btn-outline-danger btn-sm ml-auto" title="Remove Bookmark" id="bookmark_{{obj.pk}}"><i class="fas fa-times"></i></button>
+                            </h5>
+                            <p class="card-text m-0">{{obj.sub_title}}</p>
+                            <p class="card-text m-0"><small class="text-muted">Last updated {{obj.updated_on|timesince}} ago</small></p>
+                    </a>
+                    <p class="card-text">
+                            <div class="d-flex flex-column text-center">
+                                <button class="btn btn-sm mx-2 btn-outline-danger nofocus py-0
+                                {% if request.user.id in obj.all_likers %} active {% endif %}
+                                " id="like_{{obj.pk}}" title="Like it" onclick="likeit({{obj.pk}})"><i class="far fa-heart" title="Love it"></i></button>
+                                <div class="sharethis-inline-share-buttons dropdown-item d-inline-block pl-2" data-url="{% url 'registration:post:detail' pk=obj.pk %}"></div>
+                            </div>
+                    </p>
+                    </div>
+                </div>
+            
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

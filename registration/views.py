@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,reverse
 from post.models import Post
-from .models import Images, UserExtend
+from .models import Images, UserExtend, Bookmarks
 from .forms import SignupForm, LoginForm
 from django.contrib.auth import login, authenticate, views as auth_view, mixins, models
 from django.views.generic import DetailView, TemplateView, ListView, UpdateView
@@ -92,3 +92,14 @@ class UpdateProfileView(mixins.LoginRequiredMixin, UpdateView):
     template_name = 'registration/update_profile.html'
     model = UserExtend
     fields = '__all__'
+
+class BookmarkView(mixins.LoginRequiredMixin, ListView):
+    template_name = 'registration/bookmarks.html'
+    model = Bookmarks
+    context_object_name = 'bookmarks'
+    
+    def get_queryset(self):
+        o_ids = self.request.user.userextend.get_bookmarks()
+        query = Post.objects.filter(pk__in = o_ids)
+        return query
+    

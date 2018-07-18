@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
-from django.db.models.signals import post_save, post_init, pre_delete
+from django.db.models.signals import post_save, post_init, pre_delete, post_delete
 from django.dispatch import receiver
 from django.forms import ValidationError
 from cloudinary import models as cmodels
+from post.models import Post
 import cloudinary
 
 # Create your models here.
@@ -43,7 +44,8 @@ class UserExtend(models.Model):
     def get_profile_pics(self):
         return self.images.filter(img_type='0').order_by('-datetime')
 
-
+    def get_bookmarks(self):
+        return self.user.bookmarks.values_list('o_id', flat=True)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def update_UserExtend(sender, instance, created, **kwargs):
@@ -106,3 +108,20 @@ def check_followers(sender, instance, **kwargs):
         instance.fusers.remove(instance.current_user)
         raise ValidationError(u"You cannot follow yourself.")
     instance.save()
+
+
+class Bookmarks(models.Model):
+    b_type = (('1', 'Post'),)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='bookmarks')
+    bookmark_type = models.CharField(max_length=1, choices=b_type, default='1')
+    o_id = models.IntegerField(unique=True)
+
+    def __str__(self):
+        return self.bookmark_type + "  " + str(self.o_id)
+
+@receiver(pre_delete, sender=Post)
+def fix_bookmark(sender, instance, **kwargs):
+    p = Bookmarks.objects.filter(o_id=instance.pk)
+    if len(p) > 0:
+        p.first().delete()

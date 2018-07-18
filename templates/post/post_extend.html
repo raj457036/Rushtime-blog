@@ -85,15 +85,26 @@
 </div>
 
 <!-- function btns -->
-<div class="d-flex justify-content-center bg-light py-2 fixed-bottom" >
-    <button class="btn btn-sm mx-2 btn-outline-danger rounded-circle nofocus
+<div class="d-flex justify-content-center flex-column bg-light py-2 fixed-bottom" >
+    <div id="share_panel">
+        <div class="sharethis-inline-share-buttons my-2" data-url="{% url 'registration:post:detail' pk=post.pk %}"></div>
+    </div>
+    <div class="mx-auto">
+            <button class="btn btn-sm mx-2 btn-outline-danger rounded-circle nofocus
     {% if request.user.id in post.all_likers %} active {% endif %}" 
     id="like_{{post.pk}}" title="Like it" onclick="likeit({{post.pk}})"><i class="far fa-heart" title="Like it"></i></button>
-    <button class="btn btn-sm mx-2 btn-outline-primary rounded-circle" title="share"><i class="fas fa-share"></i></button> 
+
+    <button onclick="bookmark({{post.id}})" class="btn btn-sm mx-2 btn-outline-success
+    {% if post.pk in request.user.userextend.get_bookmarks %}
+    active
+    {% endif %}
+    " title="Bookmark" id="bookmark_{{post.id}}"><i class="far fa-bookmark"></i></button>
+    <button class="btn btn-sm mx-2 btn-outline-primary rounded-circle" type="button" id="share_btn" title="Share"><i class="fas fa-share"></i></button>
     <button type="submit" class="btn btn-sm mx-2 btn-outline-info d-none" id="form-btn" title="Add Comment" form="form-unlock">
         <span class="d-md-none"><i class="fas fa-comment-alt"></i></span>
         <span class="d-md-inline d-none">Add comment</span>
     </button>
+    </div>
 </div>
 
 {% else %}

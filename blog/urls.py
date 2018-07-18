@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 from post import views as post_view
 from registration import views as r_view, forms as reg_form
-from .views import HomeView, search_result_sync, follow_user
+from .views import HomeView, search_result_sync, follow_user, bookmark
 
 urlpatterns = [
     path('',HomeView.as_view(), name='home'),
@@ -34,7 +34,8 @@ urlpatterns = [
 
     # apis
     path('api/search', search_result_sync, name='api_search'),
-    path('api/follow', follow_user, name='api_follow')
+    path('api/follow', follow_user, name='api_follow'),
+    path('api/bookmark', bookmark, name='api_bookmark'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.models import User
-from registration.models import Follower
+from registration.models import Follower, Bookmarks
 from itertools import zip_longest
 
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -67,3 +67,14 @@ def follow_user(request):
             return JsonResponse({'status':True})
     else:
         return JsonResponse({'status': None})
+
+
+@login_required
+def bookmark(request):
+    obj, created = Bookmarks.objects.get_or_create(user=request.user, o_id=request.GET.get('post_id'))
+
+    if created:
+        return JsonResponse({'status':True})
+    else:
+        obj.delete()    
+        return JsonResponse({'status':False})

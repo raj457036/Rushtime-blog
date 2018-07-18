@@ -4,6 +4,7 @@ body {
 .st-logo {display: none}
 .nofocus:focus {
     outline-style: none;
+    
 }
 
 .dropdown-toggle.notificon::after {
@@ -14,6 +15,19 @@ display: none;
     width: 40px;
     height: 40px;
     background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.bookmark-user-img {
+    width: 40px;
+    height: 40px;
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.bookmark-img {
+    height:200px;
+    background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -40,10 +54,12 @@ display: none;
 .post-comment-text {
     font-size: 15px;
 }
-
+.post-card-mw {
+    width: 100%;
+}
 @media only screen and (min-width:720px) { /*medium*/
     .post-card-mw {
-        max-width: 75vw;
+        width: 80vw;
     }
     .post-comment-text {
         font-size: 18px;
@@ -51,12 +67,12 @@ display: none;
 }
 @media only screen and (min-width:992px) { /*large*/
     .post-card-mw {
-        max-width: 50vw;
+        width: 50vw;
     }
 }
 @media only screen and (min-width:1140px) { /*xlarge*/
     .post-card-mw {
-        max-width: 40vw;
+        width: 40vw;
     }
 }
 .link-no-style{color: black;}
@@ -166,10 +182,20 @@ div#search_sync {
 .card-columns {
     column-count: 2;
 }
-
+.card-columns-bookmark {
+    column-count: 1;
+}
+@media (min-width: 576px) {
+    .card-columns-bookmark {
+        column-count: 2;
+    }
+}
 @media (min-width: 768px) { 
     .card-columns {
         column-count: 3;
+    }
+    .card-columns-bookmark {
+        column-count: 2;
     }
 }
 
@@ -181,14 +207,22 @@ div#search_sync {
         width: 50%;
         float: right;
     }
+    .card-columns-bookmark {
+        column-count: 3;
+    }
 }
 
 @media (min-width: 1200px) { 
     .card-columns {
         column-count: 5;
     }
+    .card-columns-bookmark {
+        column-count: 4;
+    }
 }
 
+/* post extend share panel */
+#share_panel {display: none;}
 
 /* post card extend comment box */
 #comment-box {

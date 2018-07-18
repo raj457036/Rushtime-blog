@@ -4,12 +4,16 @@ Delete Post - {{post.title}}
 {% endblock title %}
 
 {% block content %}
-    <div class="container mt-5">{% include "post/post_card.html" %}</div>
-    <div class="mt-2 mw-100 d-flex justify-content-center">
-        <form method="post">
-            {% csrf_token %}
-            <a href="{% url 'registration:myprofile' %}#id_post_{{post.pk}}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Go Back</a>
-            <button type="submit" class="btn btn-danger">Delete confirm</button>
-        </form>
+    <div class="container mt-5 d-flex mb-2">
+        <div class="mx-auto">
+            <h2 class="text-center">Delete Post confirm?</h2>
+            <form method="post" class="text-center">
+                {% csrf_token %}
+                <a href="{% url 'registration:myprofile' %}#id_post_{{post.pk}}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Go Back</a>
+                <button type="submit" class="btn btn-danger">Delete confirm</button>
+            </form>
+            {% include "post/post_card_v2.html" %}
+        </div>
+        
     </div>
 {% endblock content %}

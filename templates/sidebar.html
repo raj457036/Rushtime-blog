@@ -1,8 +1,10 @@
 <div id="left-bar" class="bg-light shadow">
     <div class="list-group mt-2 font-weight-bold px-2">
-        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-home"></i> Home</a>
+        <a href="/" class="list-group-item list-group-item-action"><i class="fas fa-home"></i> Home</a>
         <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-fire"></i> Trending</a>
-        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-bookmark"></i> Bookmarks</a>
+        <a href="{% url 'registration:bookmark' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"><span><i class="fas fa-bookmark"></i> Bookmarks</span> 
+            <span class="badge badge-primary badge-pill">{{request.user.bookmarks.all|length}}</span>
+        </a>
     </div>
     <div class="list-group mt-2 font-weight-bold text-muted px-2">
         Your Rushers 

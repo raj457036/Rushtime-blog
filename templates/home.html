@@ -3,16 +3,20 @@
 
 {% block content %}
 <div class="container mt-5 px-0">
-    {% for i in post_list %}
-        {% include "post/post_card.html" with post=i %}
-    {% empty %}
-    <div class="d-flex flex-column mx-2 ">
-        <p class="mx-auto">Humm... it seems you donot follow anyone yet. No problem Let follow some click below or Read some of the best articles around the world.</p>
-        <div class="mx-auto d-block">
-            <a href="#" class="btn btn-primary">Search Peoples</a>
-            <a href="#" class="btn btn-primary">Top articles</a>
+    <div class="d-flex flex-column">
+        
+        {% for i in post_list %}
+        <div class="mx-auto">{% include "post/post_card.html" with post=i %}</div>
+            
+        {% empty %}
+        <div class="mx-2 ">
+            <p class="mx-auto">Humm... it seems you donot follow anyone yet. No problem Let follow some click below or Read some of the best articles around the world.</p>
+            <div class="mx-auto d-block">
+                <a href="#" class="btn btn-primary">Search Peoples</a>
+                <a href="#" class="btn btn-primary">Top articles</a>
+            </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
