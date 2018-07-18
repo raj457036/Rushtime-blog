@@ -11,8 +11,8 @@
     <div class="container user_container">
         <div class="d-flex justify-content-center detail_bar">
             <img src="
-            {% if request.user.userextend.Profile_pic.img %}
-            {{request.user.userextend.Profile_pic.img.url}}
+            {% if profile_pic.img %}
+            {{profile_pic.img.url}}
             {% else %}
             {% static 'registration/imgs/user.png' %}
             {% endif %}" 
@@ -27,13 +27,13 @@
             </blockquote>
             <div class="row p-2">
             {% if user == request.user %}
-                <div class="col-md-4">
+                <div class="col-4">
                     <a href="{% url 'registration:myphotos' %}" class="btn btn-block btn-outline-primary">Photos</a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
                     <a href="#" class="btn btn-block btn-outline-secondary">Followers</a>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
                     <a href="#" class="btn btn-block btn-outline-success">Following</a>
                 </div>
             {% endif %}

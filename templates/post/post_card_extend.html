@@ -11,8 +11,8 @@
                     {% url 'registration:userprofile' pk=post.user.pk %}
                     {% endif %}
                     "><img src="
-                        {% if post.user.userextend.Profile_pic.img %}
-                        {{post.user.userextend.Profile_pic.img.url}}
+                        {% if profile_pic.img %}
+                        {{profile_pic.img.url}}
                         {% else %}
                         {% static 'registration/imgs/user.png' %}
                         {% endif %}"

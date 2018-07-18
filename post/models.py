@@ -2,12 +2,14 @@ from django.db import models
 from django.conf import settings
 from notifiy.models import Notice
 from django.core.validators import validate_comma_separated_integer_list
+from cloudinary import models as cmodels
+import cloudinary
 # Create your models here.
 
 class Post(models.Model):
     title = models.CharField(max_length=300)
     sub_title = models.CharField(max_length=150, blank=True)
-    head_img = models.ImageField(verbose_name="Title Image" ,null=True)
+    head_img = cmodels.CloudinaryField('images')
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)

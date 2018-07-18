@@ -1,28 +1,5 @@
 {% extends 'base.html' %}
 {% block title %}{{request.user}}(5) &middot; Blog Home{% endblock title %}
-{% block leftcontent %}
-    <div id="left-bar" class="bg-light shadow">
-        <div class="list-group mt-2 font-weight-bold px-2">
-            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-home"></i> Home</a>
-            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-fire"></i> Trending</a>
-            <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-bookmark"></i> Bookmarks</a>
-        </div>
-        <div class="list-group mt-2 font-weight-bold text-muted px-2">
-            Your Rushers 
-        </div>
-        <div class="list-group mt-2 font-weight-bold px-2">
-            <a href="#" class="list-group-item list-group-item-action">Porta ac co</a>
-            <a href="#" class="list-group-item list-group-item-action disabled">Vestib</a>
-            <a href="#" class="list-group-item list-group-item-action">Dapibus ac </a>
-            <a href="#" class="list-group-item list-group-item-action">Mor</a>
-            <a href="#" class="list-group-item list-group-item-action">Porta ac co</a>
-            <a href="#" class="list-group-item list-group-item-action disabled">Vestib</a>
-        </div>
-        <div class="text-center text-muted mt-1">
-            <small class="d-block">RushTime Blogs &copy; {% now 'Y' %}</small>
-        </div>
-    </div>
-{% endblock leftcontent %}
 
 {% block content %}
 <div class="container mt-5 px-0">

@@ -41,18 +41,25 @@
             </div>
         </div>
     </div>
+
+
+    <!-- content -->
     <a href="{% url 'registration:post:detail' pk=post.pk %}" class="post-card_link">
     <div class="card-body p-0">
-        <div class="card-title h3 px-2 title text-dark">{{post.title}}</div>
-        <div class="card-subtitle text-muted px-2">{{post.sub_title}}</div>
-        <div class="card-text">
-            <img src="
-            {% if post.head_img %}
-            {{post.head_img.url}}
-            {% else %}
-            {% static 'registration/imgs/bg.jpg'  %}
-            {% endif %}
-            " alt="Its just a joke" class="img-fluid post-front-img mx-auto d-block">
+        <div class="row">
+            <div class="col-8">
+                <div class="card-title h3 px-2 title text-dark">{{post.title}}</div>
+                <div class="card-subtitle text-muted px-2">{{post.sub_title}}</div>
+            </div>
+            <div class="col-4">
+                <img src="
+                {% if post.head_img %}
+                {{post.head_img.url}}
+                {% else %}
+                {% static 'registration/imgs/bg.jpg'  %}
+                {% endif %}
+                " alt="Its just a joke" class="img-fluid post-front-img mx-auto d-block" style="max-height:250px">
+            </div>
         </div>
     </a>     
     </div>
@@ -79,7 +86,7 @@
                 <i class="fas fa-cog"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item disable" href="#">Still</a>
+                <a class="dropdown-item disable" href="#"><i class="fas fa-exclamation"></i> Report</a>
                 <a class="dropdown-item disable" href="#">in</a>
                 <a class="dropdown-item disable" href="#">beta</a>
                 {% if post.user == request.user and request.resolver_match.url_name == 'myprofile' %}

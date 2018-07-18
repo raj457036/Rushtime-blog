@@ -5,7 +5,8 @@ from django.contrib.auth import settings
 type_of_notice = (
     ('1','Post'),
     ('2','Comment'),
-    ('3','Reply')
+    ('3','Reply'),
+    ('4', 'Follow')
 )
 
 
@@ -17,6 +18,9 @@ class Notice(models.Model):
     date_time = models.DateTimeField(auto_now_add=True)
     c_id = models.PositiveIntegerField()
     viewed = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.text
     
+    # def follow_request(self, user, message, c_id):
+    #     pass

@@ -10,55 +10,78 @@
     <div class="container user_container">
         <div class="d-flex justify-content-center detail_bar">
             <img src="
-            {% if user.userextend.Profile_pic.img %}
-            {{user.userextend.Profile_pic.img.url}}
+            {% if profile_pic.img %}
+            {{profile_pic.img.url}}
             {% else %}
             {% static 'registration/imgs/user.png' %}
             {% endif %}" 
             class='img-thumbnail img-fluid rounded-circle user_img shadow' alt="">
         </div>
         <div class="text-center bg-white rounded mt-2 shadow-sm py-3">
-            <h2 class="display-4">{{user.get_full_name}} </h2>
+            <h2 class="display-4">{{user.get_full_name}}  
+            {% if request.user != user %}
+            <small><input type="button" id="follow_btn" onclick="follow({{user.pk}}, '{{ csrf_token }}')"
+                {% if user in request.user.userextend.get_following %}
+                    class="btn btn-sm btn-outline-danger"
+                    value='Unfollow'
+                {% else %}
+                    class="btn btn-sm btn-outline-primary"
+                    value="Follow"
+                {% endif %}>
+            </small>
+            {% else %}
+            <a href="{% url 'registration:updateprofile' pk=request.user.pk %}" style="font-size:15px;"><i class="fas fa-cog"></i></a>
+            {% endif %}
+            </h2>
             <cite>{{user}}</cite>
             <blockquote class="blockquote text-center">
                 <p class="mb-0">{{user.userextend.aboutMe}}</p>
                 <footer class="blockquote-footer">{{user}}</footer>
             </blockquote>
             <div class="row p-2">
-            {% if user.userextend.protected == '3' or user == request.user or user.userextend.protected == '2' and user in request.user.owner.all.first.fusers.all %}
+            {% if user.userextend.protected == '3' or user == request.user or user.userextend.protected == '2' and user in request.user.userextend.get_following %}
             
-                <div class="col-md-4">
-                    <a href="{% url 'registration:myphotos' %}?pk={{user.pk}}" class="btn btn-block btn-outline-primary">Photos</a>
+                <div class="col-4">
+                    <a href="{% url 'registration:myphotos' %}?pk={{user.pk}}" class="btn btn-block btn-outline-primary">
+                        <span class="d-none d-md-inline-block">Photos</span>
+                        <i class="far fa-image d-md-none"></i>
+                    </a>
                 </div>
-                <div class="col-md-4">
-                    <a href="#" class="btn btn-block btn-outline-secondary">Articles</a>
+                <div class="col-4">
+                    <a href="#" class="btn btn-block btn-outline-secondary">
+                        <span class="d-none d-md-inline-block">Bookmarks</span>
+                        <i class="far fa-bookmark d-md-none"></i>
+                    </a>
                 </div>
-                <div class="col-md-4">
-                    <a href="#" class="btn btn-block btn-outline-success">Posts</a>
+                <div class="col-4">
+                    <a href="#" class="btn btn-block btn-outline-success">
+                        <span class="d-none d-md-inline-block">Posts</span>
+                        <i class="far fa-newspaper d-md-none"></i>
+                    </a>
                 </div>
             {% else  %}
                 <div class="col-12">
                     <p class="text-danger">{{user}} has a private account, You must follow to see Photos, Article and Posts</p>
-                    <a href="#" class="btn btn-outline-info">Follow request</a>
                 </div>
             {% endif %}
             </div>
         </div>
-
+<!-- post lists -->
         <div class="bg-white rounded mt-2 shadow-sm py-3">
             <h2 class="display-4 text-center">Recent Posts</h2>
             {% if user.userextend.protected == '3' or user == request.user or user.userextend.protected == '2' and user in request.user.owner.all.first.fusers.all %}
                 <div class="d-flex flex-column">
+                    <div class="mx-auto">
                         {% for post in post_list reversed %}
                             {% include "post/post_card.html" with post=post %}
                         {% empty %}
                         <p class="lead text-center">NO POSTS YET.</p>
                         {% endfor %}
+                    </div>
                 </div>
             {% else  %}
                 <div class="text-center">
                     <p class="text-danger">{{user}} has a private account, You must follow to see Posts.</p>
-                    <a href="#" class="btn btn-outline-info">Follow request</a>
                 </div>
             {% endif %}
         </div>

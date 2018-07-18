@@ -4,6 +4,7 @@ from .models import Images, UserExtend
 from .forms import SignupForm, LoginForm
 from django.contrib.auth import login, authenticate, views as auth_view, mixins, models
 from django.views.generic import DetailView, TemplateView, ListView, UpdateView
+from django.db.models import Q
 # Create your views here.
 
 def signup(request):
@@ -66,6 +67,7 @@ class ProfileView(mixins.LoginRequiredMixin, ListView):
     def get_queryset(self, *args, **kwargs):
         query = Post.objects.filter(user=self.request.user)
         return query
+        
 
 class PhotosList(mixins.LoginRequiredMixin, ListView):
     template_name = "registration/Photos.html"
@@ -74,9 +76,9 @@ class PhotosList(mixins.LoginRequiredMixin, ListView):
 
     def get_queryset(self, *args, **kwargs):
         if  self.request.GET.get('pk',False):
-            query = Images.objects.filter(user__pk =  self.request.GET.get('pk'))
+            query = Images.objects.filter(user__pk =  UserExtend.objects.get(user__pk = self.request.GET.get('pk')).pk)
         else:
-            query = Images.objects.filter(user = self.request.user)
+            query = Images.objects.filter(user = self.request.user.userextend)
 
         return query
 

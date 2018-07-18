@@ -11,7 +11,11 @@ display: none;
 }
 
 .post-user-img {
-    width: 35px;
+    width: 40px;
+    height: 40px;
+    background-position: top;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .post-username {
     font-family: Arial, Helvetica, sans-serif;
@@ -61,6 +65,18 @@ display: none;
 
 @media only screen and (min-width:720px) {
     .w-md-50 {width:50%;}
+}
+
+div#search_sync {
+    position: absolute;
+    z-index: 21;
+    width: 100%;
+    top:5px;
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+    display: none;
 }
 
 /* login/signup html */
@@ -126,10 +142,6 @@ display: none;
     .user_container{
         top:15vw;
     }
-}
-
-.banner_img {
-
 }
 
 
@@ -221,5 +233,43 @@ display: none;
 @media only screen and (max-width:720px) { /*medium*/
     #left-bar {
         width: 100%;
+    }
+}
+
+
+
+/* fonts */
+.text-nm {font-size: }
+
+.text-fluid p {
+
+}
+.text-fluid .display-5{
+    
+}
+@media (min-width: 768px) { 
+    .text-fluid p {
+
+    }
+    .text-fluid .display-5{
+        
+    }
+}
+
+@media (min-width: 992px) {
+    .text-fluid {
+        
+    }
+    .text-fluid .display-5{
+        
+    }
+}
+
+@media (min-width: 1200px) { 
+    .text-fluid {
+        
+    }
+    .text-fluid .display-5{
+        
     }
 }

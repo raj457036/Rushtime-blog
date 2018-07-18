@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.db.models.signals import post_save, post_init, pre_delete
 from django.dispatch import receiver
 from django.forms import ValidationError
@@ -7,36 +8,22 @@ from cloudinary import models as cmodels
 import cloudinary
 
 # Create your models here.
-class Images(models.Model):
-    imgType = (
-        ('0', 'Profile Pic'),
-        ('1', 'Post Pic'),
-        ('2', 'Article Pic'),
-        ('3', 'Banner Pic')
-    )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    img = cmodels.CloudinaryField('image')
-    img_type = models.CharField(max_length=1, choices=imgType, default='1')
-    def __str__(self):
-        return self.img.public_id
-
-@receiver(pre_delete, sender=Images)
-def photo_delete(sender, instance, **kwargs):
-    cloudinary.uploader.destroy(instance.img.public_id)
-
-
 class UserExtend(models.Model):
     protection_level = (
         ('1', 'No One allowed'),
         ('2', 'only followers'),
         ('3', 'everyone')
     )
+    genders = (
+        ('m', 'Male'),
+        ('f', 'Female'),
+        ('o', 'Others')
+    )
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_birth = models.DateField(null=True)
-    gender = models.CharField(max_length=1)
+    gender = models.CharField(max_length=1, choices=genders)
     aboutMe  = models.CharField(max_length=255, blank=True)
-    Profile_pic = models.OneToOneField(Images, on_delete=models.CASCADE, null=True, blank=True)
     # settings
     protected = models.CharField(max_length=1, choices=protection_level, default='1')
 
@@ -53,12 +40,35 @@ class UserExtend(models.Model):
             f = []
         return f
 
+    def get_profile_pics(self):
+        return self.images.filter(img_type = '0').order_by('-datetime') 
+
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def update_UserExtend(sender, instance, created, **kwargs):
     if created:
         UserExtend.objects.create(user = instance)
     instance.userextend.save()
 
+
+class Images(models.Model):
+    imgType = (
+        ('0', 'Profile Pic'),
+        ('1', 'Post Pic'),
+        ('2', 'Article Pic'),
+        ('3', 'Banner Pic')
+    )
+    user = models.ForeignKey(UserExtend, on_delete=models.CASCADE, related_name='images')
+    img = cmodels.CloudinaryField('image')
+    img_type = models.CharField(max_length=1, choices=imgType, default='1')
+    datetime = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.img.public_id
+
+@receiver(pre_delete, sender=Images)
+def photo_delete(sender, instance, **kwargs):
+    cloudinary.uploader.destroy(instance.img.public_id)
 
 
 
@@ -71,7 +81,7 @@ class Follower(models.Model):
 
     @classmethod
     def add_follow(cls, current_user, fuser):
-        follow_obj, created = Following.objects.get_or_create(
+        follow_obj, created = Follower.objects.get_or_create(
             current_user = current_user
         )
 
@@ -79,7 +89,7 @@ class Follower(models.Model):
 
     @classmethod
     def remove_follow(cls, current_user, fuser):
-        follow_obj, created = Following.objects.get_or_create(
+        follow_obj, created = Follower.objects.get_or_create(
             current_user = current_user
         )
 

@@ -2,6 +2,8 @@ from django.shortcuts import redirect, resolve_url
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from . import models
+from registration.models import Images, UserExtend
+from django.db.models import Q
 from django.views.generic import DetailView, CreateView, DeleteView
 from notifiy.models import Notice
 from django.http import JsonResponse
@@ -14,12 +16,29 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         g = self.request.GET.get('read', False)
+        sl = self.object.user.userextend.protected
+        ctx = super().get_context_data(**kwargs)
+        print(sl)
         if g:
             n = Notice.objects.get(pk=g)
             n.viewed = True
             n.save()
-        
-        return super().get_context_data(**kwargs)
+        if self.request.user == self.object.user:
+            ctx['lock'] = False # all allowed
+            ctx['me'] = True
+        else:
+            ctx['me'] = False
+            if sl == '3':
+                ctx['lock'] = False # all allowed
+            elif sl == '2':
+                if self.request.user in self.object.user.userextend.get_followers():
+                    ctx['lock'] = False # all allowed
+                else:
+                    ctx['lock'] = True # no allowed
+            else:
+                ctx['lock'] = True # no allowed
+
+        return ctx
 
 @login_required
 def PostComment(request):
