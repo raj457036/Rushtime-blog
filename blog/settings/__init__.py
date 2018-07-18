@@ -1,4 +1,4 @@
-debug = False
+debug = True
 if debug:
     from .development import *
 else:
