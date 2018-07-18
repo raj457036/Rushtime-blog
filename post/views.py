@@ -2,7 +2,7 @@ from django.shortcuts import redirect, resolve_url
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from . import models
-from registration.models import Images, UserExtend
+from registration.models import  UserExtend
 from django.db.models import Q
 from django.views.generic import DetailView, CreateView, DeleteView
 from notifiy.models import Notice

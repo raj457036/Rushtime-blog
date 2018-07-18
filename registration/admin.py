@@ -4,5 +4,5 @@ from . import models
 
 admin.site.register(models.UserExtend)
 admin.site.register(models.Follower)
-admin.site.register(models.Images)
-admin.site.register(models.Bookmarks)
+# admin.site.register(models.Images)
+# admin.site.register(models.Bookmarks)
