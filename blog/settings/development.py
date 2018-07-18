@@ -26,7 +26,7 @@ SECRET_KEY = os.environ['SECURITY_KEY'] if os.environ.get('SECURITY_KEY') != Non
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['rushtime.herokuapp.com','127.0.0.1']
 
 
 # Application definition
