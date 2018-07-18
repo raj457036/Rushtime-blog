@@ -2,7 +2,7 @@
 {% block title %}Photos &middot; {{user}}{% endblock title %}
 {% block content %}
     <div class="container-fluid">
-        {% if user not in request.user.owner.all.first.fusers.all and user != request.user%}
+        {% if user not in request.user.userextend.get_following and user != request.user%}
             <div class="mt-5">
                 <p class="lead text-center">You must follow {{user}} to see Photos. <br>
                 <a href="{% url 'registration:userprofile' pk=user.pk %}" class="btn btn-outline-info">

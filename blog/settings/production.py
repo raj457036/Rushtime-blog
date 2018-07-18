@@ -24,9 +24,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 SECRET_KEY = os.environ['SECURITY_KEY'] if os.environ.get('SECURITY_KEY') != None else '*j0(@)o5074i)8&s7vxv083b5m+-@+r)us&rrz87&tw5g0g5z@' 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['rushtime.herokuapp.com']
+ALLOWED_HOSTS = ['rushtime.herokuapp.com', ]
 
 
 # Application definition
