@@ -24,9 +24,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 SECRET_KEY = os.environ['SECURITY_KEY'] if os.environ.get('SECURITY_KEY') != None else '*j0(@)o5074i)8&s7vxv083b5m+-@+r)us&rrz87&tw5g0g5z@' 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['rushtime.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['rushtime.herokuapp.com']
 
 
 # Application definition
@@ -89,10 +89,10 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd1g8v468rerc4g',
-        'USER': 'oewvnyqsjenzal',
-        'PASSWORD': '96606e14eb11670692a63141fad551e42e32fce96b23bbfd1c886a57aeac9dc9',
-        'HOST': 'ec2-54-83-59-239.compute-1.amazonaws.com',
+        'NAME': 'd45uk6npddco8a',
+        'USER': 'xyfswgsefnizcm',
+        'PASSWORD': '43a0ead9dada7d0b4c2403bcfc0e14175bc93a0175597d0c9eef397f2bdfbe82',
+        'HOST': 'ec2-174-129-192-200.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
