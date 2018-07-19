@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,reverse
 from post.models import Post
-from .models import  UserExtend 
+from .models import Images, UserExtend, Bookmarks
 from .forms import SignupForm, LoginForm
 from django.contrib.auth import login, authenticate, views as auth_view, mixins, models
 from django.views.generic import DetailView, TemplateView, ListView, UpdateView
@@ -74,13 +74,13 @@ class PhotosList(mixins.LoginRequiredMixin, ListView):
     context_object_name = 'img_list'
     model = models.User
 
-    # def get_queryset(self, *args, **kwargs):
-    #     if  self.request.GET.get('pk',False):
-    #         query = Images.objects.filter(user__pk =  UserExtend.objects.get(user__pk = self.request.GET.get('pk')).pk)
-    #     else:
-    #         query = Images.objects.filter(user = self.request.user.userextend)
+    def get_queryset(self, *args, **kwargs):
+        if  self.request.GET.get('pk',False):
+            query = Images.objects.filter(user__pk =  UserExtend.objects.get(user__pk = self.request.GET.get('pk')).pk)
+        else:
+            query = Images.objects.filter(user = self.request.user.userextend)
 
-    #     return query
+        return query
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -95,11 +95,11 @@ class UpdateProfileView(mixins.LoginRequiredMixin, UpdateView):
 
 class BookmarkView(mixins.LoginRequiredMixin, ListView):
     template_name = 'registration/bookmarks.html'
-    model = UserExtend
+    model = Bookmarks
     context_object_name = 'bookmarks'
     
-    # def get_queryset(self):
-    #     o_ids = self.request.user.userextend.get_bookmarks()
-    #     query = Post.objects.filter(pk__in = o_ids)
-    #     return query
+    def get_queryset(self):
+        o_ids = self.request.user.userextend.get_bookmarks()
+        query = Post.objects.filter(pk__in = o_ids)
+        return query
     
