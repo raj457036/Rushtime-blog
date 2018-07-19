@@ -10,8 +10,8 @@
     <div class="container user_container">
         <div class="d-flex justify-content-center detail_bar">
             <img src="
-            {% if profile_pic.img %}
-            {{profile_pic.img.url}}
+            {% if user.userextend.get_profile_pics|length > 0 %}
+            {{user.userextend.get_profile_pics.first.img.url}}
             {% else %}
             {% static 'registration/imgs/user.png' %}
             {% endif %}" 
