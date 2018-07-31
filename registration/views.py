@@ -18,13 +18,21 @@ def signup(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
             form = SignupForm(request.POST)
-
+            
+            pass
             if form.is_valid():
                 user = form.save()
                 user.refresh_from_db()
+                print(request.FILES)
                 user.first_name,user.last_name = sepName(form.cleaned_data.get('name'))
                 user.userextend.gender = form.cleaned_data.get('gender')
                 user.userextend.date_of_birth = form.cleaned_data.get('date_of_birth')
+                user.userextend.aboutMe = form.cleaned_data.get('about_me')
+                if request.FILES.get('display_img', False):
+                    user.userextend.images.create(img=request.FILES.get('display_img'), img_type='0')
+                else:
+                    user.userextend.avatar = form.cleaned_data['avatar_number']
+
                 user.save()
                 raw_password = form.cleaned_data.get('password1')
                 user = authenticate(username=user.username, password=raw_password)
@@ -35,13 +43,17 @@ def signup(request):
         
         return render(request,'registration/signup.html',{'form':form})
     else:
-        return redirect('')
+        return redirect('home')
 
 class RegLogin(auth_view.LoginView):
     form_class = LoginForm
     template_name = 'registration/login.html'
     
     def dispatch(self, *args, **kwargs):
+        print(self.request.POST.get('remember_me', None))
+        if self.request.POST.get('remember_me', False):
+            self.request.session.set_expiry(604800)
+
         if self.request.user.is_authenticated:
             return redirect(reverse('home'))
         return super().dispatch(*args, **kwargs)
@@ -56,7 +68,7 @@ class UserDetail(mixins.LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['post_list'] = Post.objects.filter(user__pk=self.kwargs['pk'])
+        ctx['post_list'] = Post.objects.filter(Q(user__pk=self.kwargs['pk']) & ~Q(visibility='3'))
         return ctx
 
 class ProfileView(mixins.LoginRequiredMixin, ListView):

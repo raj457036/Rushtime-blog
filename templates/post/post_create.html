@@ -27,10 +27,15 @@ Create a new Post &middot; {{request.user}}
             <div hidden>
                 {{field}}
             </div>
+            {% elif forloop.counter == 5 %}
+            <div class="form-group">
+                {{field.label_tag}}
+                {% render_field field|append_attr:"class:form-control d-inline-block mx-2" style="width:auto" %} <small class="text-muted">Make this post draft and edit it later.</small>
+            </div>
             {% else %}
             <div class="form-group">
                 {{field.label_tag}}
-                {% render_field field|append_attr:"class:form-control form-control-sm"%}
+                {% render_field field|append_attr:"class:form-control form-control-sm" %}
             </div>
             {% endif %}
         {% endfor %}
@@ -41,10 +46,10 @@ Create a new Post &middot; {{request.user}}
 {% endblock content %}
 
 {% block op_script %}
+<script src="{% static 'post/js/post_create.js' %}"></script>
 <script src="{% static 'js/Blackedit.js' %}"></script>
 <script>
     var ed = new Editor('editor','id_content');
-    ed.init();
-    
+    ed.init(); 
 </script>
 {% endblock op_script %}

@@ -1,0 +1,6 @@
+<div class="w-100 slider d-flex justify-content-center fixed-top bg-dark shadow" id="slider-1" style="{{style}}">
+    {% for item in items %}
+    <a href="#" class="{% if forloop.counter == 1 %}active{% endif %} px-lg-5 py-2 px-2">{{item}}</a>
+    {% endfor %}
+</div>
+<div style="margin-bottom:85px"></div>

@@ -1,11 +1,13 @@
 {% extends "base.html" %}
+{% load util_tags %}
+{% block class %}class="bg-1" style="background-image:url('{% get_random_img %}')"{% endblock class %}
 {% block title %}
 login or signup &middot; RushTime Blog
 {% endblock title %}
 {% block content %}
 {% load static %}
 
-<div class="container-fluid bg-1 bg">
+<div class="container-fluid" >
     <div class="row ">
         <div class="col-lg-8 d-none d-lg-block">
             {% if logged_out %}
@@ -32,13 +34,9 @@ login or signup &middot; RushTime Blog
                                 {% endif %}
                             </div>
                             {% endfor %}
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="Remember">
-                                <label class="form-check-label" for="Remember">Remember me</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-sm">Login</button>
-                            or 
-                            <a class="btn btn-secondary btn-sm" href="{% url 'user_signup' %}">Signup</a>
+                            <button type="submit" class="btn btn-primary btn-sm px-3"><span class="font-weight-bold">Login</span></button>
+                            <span class="text-muted">or</span> 
+                            <a class="btn btn-success btn-sm px-3" href="{% url 'user_signup' %}"><span class="font-weight-bold">Register</span></a>
                         </form>
                     </div>
                 </div>

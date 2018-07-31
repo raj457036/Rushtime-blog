@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}
-    {{request.user}} &middot; profile
-{% endblock title %}
+{% load util_tags %}
+
+{% block title %}{{request.user}} &middot; profile {% endblock title %}
 {% block content %}
 {% load static %}
 {% load cloudinary %}
-    <div class="mt-3  banner_container">
-        <img src="{% static 'registration/imgs/bg.jpg' %}" class="banner_img img-fluid rounded" alt="" srcset="">
+    <div class="banner_container">
+        <img src="{% get_random_img %}" class="banner_img img-fluid" alt="" srcset="">
     </div>
     <div class="container user_container">
         <div class="d-flex justify-content-center detail_bar">
@@ -14,7 +14,7 @@
             {% if request.user.userextend.get_profile_pics|length > 0 %}
             {{request.user.userextend.get_profile_pics.first.img.url}}
             {% else %}
-            {% static 'registration/imgs/user.png' %}
+            {% static user.userextend.get_avatar_url %}
             {% endif %}" 
             class='img-thumbnail img-fluid rounded-circle user_img shadow' alt="">
         </div>
@@ -55,7 +55,7 @@
                 <div class="d-flex flex-column">
                     <div class="mx-auto">
                     {% for post in post_list reversed %}
-                        {% include "post/post_card.html" with post=post %}
+                        {% include "post/post_card_v2.html" with post=post %}
                     {% empty %}
                         <p class="lead text-center">NO POSTS YET.</p>
                     {% endfor %}

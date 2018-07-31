@@ -18,34 +18,48 @@ class UserExtend(models.Model):
     genders = (
         ('m', 'Male'),
         ('f', 'Female'),
-        ('o', 'Others')
+    )
+    post_type_choice = (
+        ('1','Public'),
+        ('2','Only folowers'),
+        ('3','Private')
     )
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_of_birth = models.DateField(null=True)
     gender = models.CharField(max_length=1, choices=genders)
     aboutMe  = models.CharField(max_length=255, blank=True)
+    avatar = models.SmallIntegerField(default=1)
     # settings
     protected = models.CharField(max_length=1, choices=protection_level, default='1')
-
+    Post_Type = models.CharField(max_length=1, choices=post_type_choice, default='1')
+    follower = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followers', blank=True)  #userextend.followers.all
+    following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followings', blank=True) #userextend.following.all
     def __str__(self):
         return self.user.username
 
+
     def get_followers(self):
-        return self.user.followers.all()
+        return self.follower.all()
 
     def get_following(self):
-        try:
-            f = self.user.owner.first().fusers.all()
-        except Exception:
-            f = []
-        return f
+        return self.following.all()
 
     def get_profile_pics(self):
         return self.images.filter(img_type='0').order_by('-datetime')
 
     def get_bookmarks(self):
         return self.user.bookmarks.values_list('o_id', flat=True)
+
+    def get_avatar_url(self, stat=False):
+        v = ''
+        if self.gender == 'm':
+            v='male'
+        else:
+            v='female'
+        if stat:
+            return f'/static/registration/Avatars/{v}/{self.gender}({self.avatar}).svg'
+        return f'registration/Avatars/{v}/{self.gender}({self.avatar}).svg'
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def update_UserExtend(sender, instance, created, **kwargs):
@@ -74,42 +88,6 @@ def photo_delete(sender, instance, **kwargs):
     cloudinary.uploader.destroy(instance.img.public_id)
 
 
-
-
-class Follower(models.Model):
-    # users that i am following
-    fusers = models.ManyToManyField(settings.AUTH_USER_MODEL, symmetrical=False, related_name='followers')
-    current_user = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='owner', on_delete=models.CASCADE)
-
-
-    @classmethod
-    def add_follow(cls, current_user, fuser):
-        follow_obj, created = Follower.objects.get_or_create(
-            current_user = current_user
-        )
-
-        follow_obj.fusers.add(fuser)
-
-    @classmethod
-    def remove_follow(cls, current_user, fuser):
-        follow_obj, created = Follower.objects.get_or_create(
-            current_user = current_user
-        )
-
-        follow_obj.fusers.remove(fuser)
-
-    def __str__(self):
-        return self.current_user.username
-
-
-@receiver(post_init, sender=Follower)
-def check_followers(sender, instance, **kwargs):
-    if instance.current_user in instance.fusers.all():
-        instance.fusers.remove(instance.current_user)
-        raise ValidationError(u"You cannot follow yourself.")
-    instance.save()
-
-
 class Bookmarks(models.Model):
     b_type = (('1', 'Post'),)
 
@@ -125,3 +103,4 @@ def fix_bookmark(sender, instance, **kwargs):
     p = Bookmarks.objects.filter(o_id=instance.pk)
     if len(p) > 0:
         p.first().delete()
+

@@ -1,18 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
 {{post.title}} &middot; {{post.user}} : Blog
 {% endblock title %}
 
 {% block content %}
-<div class="mt-5 container-fluid px-0">
+{% include "blog/slider.html" with items=post.user.post_topics.all style="margin-top:40px;" %}
+<div class="container-fluid px-0"> 
     {% include "post/post_extend.html" %}
 </div>
 {% endblock content %}
 
 {% block op_script %}
-<script>
-    $(document).ready(function(){
-        $('img').addClass('img-fluid rounded');
-    })
-</script>
+<script src="{% static 'post/js/post_detail.js' %}"></script>
 {% endblock op_script %}

@@ -1,109 +1,108 @@
 {% load static %}
+
 {% if not lock %}
 <!-- title section -->
-<div class="mx-lg-5 px-lg-5 mx-2 row" >
-    <div class="col" >
-        <h1 class="title display-4">{{post.title}}</h1>
-        <p class="lead text-muted">{{post.sub_title}}</p>
-        <div class="card border-0" style="max-width: 18rem;">
-            <div class="card-body p-0 row">
-                    <div class="col-3 pl-4">
-                            <div class="border post-user-img rounded-circle" 
+<div class="ml-lg-5 pl-lg-5 pr-lg-3 row" >
+    <div class="row no-gutters" >
+        <div class="col-md-5 d-flex">
+            <div class="flex-column my-auto px-5 px-lg-0">
+                <h1 class="detail-title display-4 play-font">{{post.title}}</h1>
+                <p class="lead text-muted play-font">{{post.sub_title}}</p>
+                <div class="border-0 card pt-2" style="max-width: 18rem;">
+                    <div class="card-body p-0 row">
+                        <div class="col-3">
+                            <div class="post-extend-user-img rounded-circle border-info border-top border-bottom" data-user='{{ post.user.username }}' onmouseover="pop(this)"
                             {% if post.user.userextend.get_profile_pics|length > 0 %}
                             style="background-image: url('{{post.user.userextend.get_profile_pics.first.img.url}}');"
                             {% else %}
-                            style="background-image: url('/static/registration/imgs/user.png');"
-                            
+                            style="background-color:white;background-image: url('{% static user.userextend.get_avatar_url %}');"
                             {% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-9 py-2">
+                            <p class="d-block m-0"><small>
+                                <a href="
+                                {% if post.user == request.user %}
+                                    {% url 'registration:myprofile' %}
+                                {% else %}
+                                    {% url 'registration:userprofile' pk=post.user.pk %}
+                                {% endif %}" class="text-dark hover-line" id="post_user_link" data-user='{{ post.user.username }}' onmouseover="pop(this)">
+                                {{post.user.get_full_name}}</a>
+                                {% if not me %}
+                                <input type="button" id="follow_btn" onclick="follow({{post.user.pk}},'{{ csrf_token }}')"
+                                {% if post.user in request.user.userextend.get_following %}
+                                    class="btn btn-sm btn-outline-danger p-0 px-1 ml-1"
+                                    value='Unfollow'
+                                {% else %}
+                                    class="btn btn-sm btn-outline-primary p-0 px-1 ml-1"
+                                    value="Follow"
+                                {% endif %}>
+                                {% endif %}</small>
+                            </p>
+                        <small class="text-muted">{{post.created_on.date|date:"M d"}} &middot; {{post.get_read_time}} min Read</small>
                         </div>
                     </div>
-                    <div class="col-9 pl-0 py-2 text-info">
-                        <small class="d-block  font-weight-light">
-                            <a href="
-                            {% if post.user == request.user %}
-                                {% url 'registration:myprofile' %}
-                            {% else %}
-                                {% url 'registration:userprofile' pk=post.user.pk %}
-                            {% endif %}">{{post.user.get_full_name}}</a>
-                            {% if not me %}
-                            <input type="button" id="follow_btn" onclick="follow({{user.pk}}, '{{ csrf_token }}')"
-                            {% if post.user in request.user.userextend.get_following %}
-                                class="btn btn-sm btn-outline-danger p-0 px-1 ml-1"
-                                value='Unfollow'
-                            {% else %}
-                                class="btn btn-sm btn-outline-primary p-0 px-1 ml-1"
-                                value="Follow"
-                            {% endif %}>
-                            {% endif %}
-                        </small>
-                    <small>{{post.created_on.date}} <i class="fa fa-star" data-toggle='tooltip' title='varified' data-placement='right'></i></small>
-                    </div>
+                </div>
             </div>
+        </div>
+        <div class="col-md-5 offset-md-1 d-lg-flex">
+            {% if post.head_img %}
+            <img src="{{post.head_img.url}}" alt="" class="img-fluid float-right">
+            {% endif %}
         </div>
         <hr>
     </div>
 </div>
 
 <!-- content -->
-<div class="container mt-3 first-big">
-    {% if post.head_img %}
-    <img src="{{post.head_img.url}}" alt="" class="img-fluid rounded d-inline-block head-img">
-    {% endif %}
-    <div class="px-2">
-        {% autoescape off %}  {{post.content}} {% endautoescape %}
+<div class="row">
+    <div class="col-12">
+        <div class="container mt-3 mb-5 first-big" id="post-content">
+            <div class="px-2">
+                {% autoescape off %}  {{post.content}} {% endautoescape %}
+            </div>
+        </div>
     </div>
 </div>
 
 <hr>
-
-
 <!-- comment -->
-<h5 class="text-center underlined">Comments</h5>
-<div class="row mx-2">
-        <div class="pb-5 col-lg-6 offset-lg-3">  
-            <div class="card-text d-flex flex-column" id="comment-box">
-                {% for c in post.comment_set.all %}
-                    <span class="post-comment-text">
-                        <span class="post-username"><a href="#" class="link-no-style">{{c.who.get_full_name}}</a> :</span>
-                        <small class="text-muted">{{c.content|safe}}
-                        <!-- <a href="#"><i class="fa fa-thumbs-up"></i> (34)</a>
-                        <a href="#"><i class="fa fa-comments-o"></i> (2)</a></small> -->
-                    </span>
-                {% empty %}
-                <small class="d-block text-center text-muted">No Comments yet</small>
-                {% endfor %}
-            </div>
-            <small class="p-0 text-center d-block" id="comment-box-opener"><i class="fa fa-ellipsis-h"></i></small>
-            <div id="comment"></div>
-            <form action="{% url 'registration:post:comment' %}" method="POST" id="form-unlock" class="d-none my-1">
-            {% csrf_token %}
-            <input type="hidden" name='post' value="{{post.pk}}" >
-            <textarea name="comment" class="form-control-sm px-lg-4 form-control w-100 py-1"
-                placeholder="Write something here ..." id="comment-area"></textarea>
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-12">
+            <h5 class="text-center underlined">Comments</h5>
+            <form class="mb-2">
+                <textarea class="form-control-sm px-lg-4 form-control w-100 py-1" placeholder="Write your comment here..." id="comment-area"></textarea>
+                <div class="text-center pt-2">
+                    <button onclick="comment({{post.pk}})" class="btn btn-sm mr-2 btn-outline-info nofocus px-4 px-lg-5 py-0" title="Add Comment"><i class="fas fa-comment-alt"></i></button>
+                </div>
             </form>
         </div>
+        <div class="col-lg-6 offset-lg-3" id="comments_container">
+            {% for comment in post.comment_set.all reversed %}
+                {% include "post/comment.html" with comment=comment post=post %}
+            {% empty %}
+                <p class="lead text-center">No Comments Yet</p>
+            {% endfor %}
+        </div>
+        <div id="comment"></div>
+    </div>
 </div>
-
 <!-- function btns -->
 <div class="d-flex justify-content-center flex-column bg-light py-2 fixed-bottom" >
-    <div id="share_panel">
-        <div class="sharethis-inline-share-buttons my-2" data-url="{% url 'registration:post:detail' pk=post.pk %}"></div>
+    <div id="share_panel-{{post.pk}}" class="px-1" style="display:none">
+        <div class="sharethis-inline-share-buttons my-2" data-url="{{ request.get_host }}{% url 'registration:post:detail' pk=post.pk %}"></div>
     </div>
     <div class="mx-auto">
-            <button class="btn btn-sm mx-2 btn-outline-danger rounded-circle nofocus
-    {% if request.user.id in post.all_likers %} active {% endif %}" 
-    id="like_{{post.pk}}" title="Like it" onclick="likeit({{post.pk}})"><i class="far fa-heart" title="Like it"></i></button>
+        <button class="btn btn-sm mr-2 btn-outline-info nofocus px-5 py-0
+        {% if request.user.id in post.all_likers %} active {% endif %}" 
+        id="like_{{post.pk}}" title="Like it" onclick="likeit({{post.pk}})"><i class="far fa-heart" title="Like it"></i></button>
 
-    <button onclick="bookmark({{post.id}})" class="btn btn-sm mx-2 btn-outline-success
-    {% if post.pk in request.user.userextend.get_bookmarks %}
-    active
-    {% endif %}
-    " title="Bookmark" id="bookmark_{{post.id}}"><i class="far fa-bookmark"></i></button>
-    <button class="btn btn-sm mx-2 btn-outline-primary rounded-circle" type="button" id="share_btn" title="Share"><i class="fas fa-share"></i></button>
-    <button type="submit" class="btn btn-sm mx-2 btn-outline-info d-none" id="form-btn" title="Add Comment" form="form-unlock">
-        <span class="d-md-none"><i class="fas fa-comment-alt"></i></span>
-        <span class="d-md-inline d-none">Add comment</span>
-    </button>
+        <button onclick="bookmark({{post.id}})" class="btn btn-sm mr-2 btn-outline-info nofocus px-5 py-0
+        {% if post.pk in request.user.userextend.get_bookmarks %}
+        active{% endif %}" title="Bookmark" id="bookmark_{{post.id}}"><i class="far fa-bookmark"></i></button>
+        
+        <button class="btn btn-sm mr-2 btn-outline-info nofocus px-5 py-0" onclick="showShare('#share_panel-{{post.pk}}')" type="button" id="share_btn" title="Share"><i class="fas fa-share"></i></button>    
     </div>
 </div>
 
@@ -111,12 +110,26 @@
 <div class="d-flex">
     <div class="mx-auto text-center">
     <img src="{% static 'registration/imgs/rushp.png' %}" alt="Rush Protection" class="img-fluid" style="max-width:250px;"><br>
+    {% if not superlock %}
     <p class="lead">It seems you do not follow {{post.user.get_full_name}}</p>
     <p class="lead">This post is protected by <span class="text-primary">Rush</span><span class="text-warning">Protection</span>. Please Follow <br> 
         <a href="{% url 'registration:userprofile' pk=post.user.pk %}">{% if post.user.userextend.gender == 'm' %} Mr.{% elif post.user.userextend.gender == 'f' %} Ms. {% endif %}
         {{post.user.get_full_name}}</a> to read this post.
     </p>
-    <p><input type="button" id="follow_btn" onclick="follow({{user.pk}}, '{{ csrf_token }}')" class="btn btn-outline-primary mt-3" value="Follow"></p>
+    <p><input type="button" id="follow_btn" onclick="follow({{post.user.pk}}, '{{ csrf_token }}')" class="btn btn-outline-primary mt-3" value="Follow"></p>
+    {% else %}
+        <p class="lead">Sorry! The Account owner has an active <span class="text-primary">Rush</span><span class="text-warning">Protection</span> lock.
+        you cannot read this post or follow its author.</p>
+    {% endif %}
     </div>
 </div>
 {% endif %}
+
+
+{% block op_script %}
+    <script>
+        
+    </script>
+{% endblock op_script %}
+
+

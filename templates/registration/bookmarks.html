@@ -1,53 +1,60 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}
 Bookmarks &middot; RushTime Blogs
 {% endblock title %}
 
 {% block content %}
-    <div class="container-fluid mt-5">
-        <p class="display-4">All Bookmarks</p>
+    <div class="container-fluid mt-5 px-0 px-lg-2">
+        <p class="display-4 d-block text-center">All Bookmarks</p>
         <div class="card-columns-bookmark">
             {% for obj in bookmarks %}
             
-                <div class="card mb-2">
-                    <a href="{% url 'registration:post:detail' pk=obj.pk %}" class="text-muted">
-                        <div class="card-img-top bookmark-img"  
-                        {% if obj.user.userextend.get_profile_pics|length > 0 %}
+                <div class="card mb-2 shadow">
+                        <div class="card-img-top bookmark-img"
+                        {% if obj.head_img %}
                             style="background-image: url('{{obj.head_img.url}}');"
                         {% else %}
                             style="background-image: url('/static/registration/imgs/user.png');"
-                        {% endif %}
-                        ></div>
+                        {% endif %}></div>
                         
-                        <div class="card-img-overlay" style="height:70px">
-                                <div class="border bookmark-user-img rounded-circle" 
+                        <div class="card-img-overlay bg-dark pt-2" style="height:70px;opacity:0.95">
+                                <small class="card-title d-flex flex-row align-items-center">
+                                <a href="{% url 'registration:userprofile' pk=obj.user.pk %}">
+                                <div class="border bookmark-user-img rounded-circle"   id="post_id_{{obj.pk}}" data-user='{{ obj.user.username }}' onmouseover="pop(this)"
                                 {% if obj.user.userextend.get_profile_pics|length > 0 %}
                                     style="background-image: url('{{obj.user.userextend.get_profile_pics.first.img.url}}');"
                                 {% else %}
-                                    style="background-image: url('/static/registration/imgs/user.png');"
-                                {% endif %}
-                                ></div>
-                                <span class="text-white shadow-sm">{{obj.user.get_full_name}}</span>
+                                    style="background-color:white;background-image: url('{% static obj.user.userextend.get_avatar_url %}');"
+                                {% endif %}></div></a>
+                                <div class="">
+                                    <span class="text-white shadow-sm px-3 rounded bg-dark ml-2 border" style="opacity:0.6;">{{obj.user.get_full_name}} &middot; 2 min read</span>
+                                    <span class="text-white shadow-sm px-3 rounded bg-dark ml-2 border d-block mt-1" style="opacity:0.6;">posted {{obj.updated_on|timesince}} ago</span>
+                                </div>
+                                
+                                <button onclick="bookmark({{obj.id}},'true')" class="btn btn-outline-info btn-sm ml-auto pb-0" title="Remove Bookmark" id="bookmark_{{obj.pk}}"><i class="fas fa-times"></i></button>
+                                </small>
                         </div>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title d-flex">{{obj.title}} 
-                            <button onclick="bookmark({{obj.id}})" class="btn btn-outline-danger btn-sm ml-auto" title="Remove Bookmark" id="bookmark_{{obj.pk}}"><i class="fas fa-times"></i></button>
-                            </h5>
-                            <p class="card-text m-0">{{obj.sub_title}}</p>
-                            <p class="card-text m-0"><small class="text-muted">Last updated {{obj.updated_on|timesince}} ago</small></p>
-                    </a>
-                    <p class="card-text">
-                            <div class="d-flex flex-column text-center">
-                                <button class="btn btn-sm mx-2 btn-outline-danger nofocus py-0
-                                {% if request.user.id in obj.all_likers %} active {% endif %}
-                                " id="like_{{obj.pk}}" title="Like it" onclick="likeit({{obj.pk}})"><i class="far fa-heart" title="Love it"></i></button>
-                                <div class="sharethis-inline-share-buttons dropdown-item d-inline-block pl-2" data-url="{% url 'registration:post:detail' pk=obj.pk %}"></div>
-                            </div>
-                    </p>
-                    </div>
+                        
+                        <div class="card-body d-flex flex-column pb-0">
+                            <a href="{% url 'registration:post:detail' pk=obj.pk %}" class="text-muted">
+                                    <h5 class="card-title">{{obj.title}}</h5>
+                                    <p class="card-text m-0 font-italic border-left pl-1">{{obj.sub_title}}</p>
+                                    <p class="card-text m-0">{{obj.get_short_story}}</p>
+                            </a>
+                            <p class="card-text">
+                                <div class="d-flex text-center flex-column">
+                                    <button class="btn btn-sm btn-outline-info nofocus py-0
+                                    {% if request.user.id in obj.all_likers %} active {% endif %}
+                                    " id="like_{{obj.pk}}" title="Like it" onclick="likeit({{obj.pk}})"><i class="far fa-heart" title="Love it"></i> <span>{% if obj.upvote > 0 %}{{ obj.upvote }}{% endif %}</span></button>
+                                    <div class="sharethis-inline-share-buttons mx-auto mt-1" style="z-index:0;max-height:35px" data-url="{% url 'registration:post:detail' pk=obj.pk %}"></div>
+                                </div></p>
+                        </div>
                 </div>
-            
             {% endfor %}
         </div>
+        {% if bookmarks|length < 1 %}
+            <h5 class="text-center">Humm... it seems you don't have any bookmarks yet.</h5>
+        {% endif %}
     </div>
 {% endblock content %}

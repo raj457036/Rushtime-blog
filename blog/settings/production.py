@@ -149,3 +149,5 @@ cloudinary.config(
     api_key = '973189349793631',
     api_secret = 'wmq2QzgphuYNGoqpExhLUX8WcOE'
 )
+
+SESSION_COOKIE_AGE = 36000 #10 hours

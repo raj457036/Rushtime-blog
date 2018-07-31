@@ -1,22 +1,24 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light py-0 pb-1 pb-lg-0 fixed-top border-bottom border-dark">
-    <i class="fas fa-bars" id="left-toggle"></i><a class="navbar-brand" href="{% url 'home' %}">&nbsp; Rush<span class="text-warning">T</span>IME <small class="text-dark">Blogs</small></a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-info py-0 pb-1 pb-lg-0 fixed-top">
+    <i class="fas fa-bars" id="left-toggle"></i>
+    <a class="navbar-brand" href="{% url 'home' %}">
+            &nbsp; <i>Rush</i>Time <small>Blogs</small></a>
     <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fa fa-bars"></i>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class=" w-md-50 mx-auto">
                 <div class="input-group">
-                    <input type="search" class="form-control form-control-sm " placeholder="search here" aria-label="search" aria-describedby="search bar" id="search_bar">
+                    <input type="search" class="form-control form-control-sm border-0" placeholder="search here" aria-label="search" aria-describedby="search bar" id="search_bar">
                     <div class="input-group-append">
-                        <button class="btn btn-info btn-sm" type="button"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-light btn-sm border-0" type="button"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
                 <div class="input-group">
                     <div id="search_sync" class="bg-white shadow p-1"></div>
                 </div>
             </div>
-            <ul class="navbar-nav ml-auto flex-shrink-1">
+            <ul class="navbar-nav ml-lg-auto flex-shrink-1 text-sm">
                 <li class="nav-item">
                     <a class="nav-link text-center" href="{% url 'registration:post:new' %}" ><i class="fa fa-plus" title="New Post"></i></a>
                 </li>

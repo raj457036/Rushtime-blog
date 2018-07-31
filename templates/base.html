@@ -3,19 +3,23 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="theme-color" content="#17a2b8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no,maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Noto+Serif|Nunito" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Playfair|Lora" rel="stylesheet"> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">    <link rel="stylesheet" href="{% static 'css/master.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="shortcut icon" href="/static/registration/fevicon.png" type="image/x-icon">
     {% block op_style %}{% endblock op_style %}
     <title>{% block title %}{% endblock %}</title>
 </head>
-<body>
+<body {% block class %}{% endblock class %}>
     {% include "blog/navbar.html" %}
     {% block navbar %}{% endblock navbar %}
-    {% include "sidebar.html" %}
+    {% if request.user.is_authenticated %}
+        {% include "sidebar.html" %}
+    {% endif %}
     {% block content %}{% endblock content %}
     {% block footer %}{% endblock footer %}
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5b4b49914a104f0011ca68b3&product=inline-share-buttons' async='async'></script>

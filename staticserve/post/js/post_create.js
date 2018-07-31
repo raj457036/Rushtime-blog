@@ -1,0 +1,5 @@
+function uploadImage() {
+    $.ajax({
+        // url: 
+    });
+}

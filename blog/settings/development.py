@@ -26,7 +26,8 @@ SECRET_KEY = os.environ['SECURITY_KEY'] if os.environ.get('SECURITY_KEY') != Non
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['rushtime.herokuapp.com','127.0.0.1']
+# ALLOWED_HOSTS = ['rushtime.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -142,3 +143,6 @@ cloudinary.config(
     api_key = '973189349793631',
     api_secret = 'wmq2QzgphuYNGoqpExhLUX8WcOE'
 )
+
+SESSION_COOKIE_AGE = 36000
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = False

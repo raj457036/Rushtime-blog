@@ -1,0 +1,27 @@
+{% load static %}
+<div class="card my-2 shadow" id="r_{{reply.pk}}">
+    <div class="row p-2">
+        <div class="col-2">
+            <a href="{% url 'registration:userprofile' pk=post.user.pk %}">
+            <div class="post-extend-user-img rounded-circle border-info border-top border-bottom" 
+            {% if reply.who.userextend.get_profile_pics|length > 0 %}
+            style="background-image: url('{{reply.who.userextend.get_profile_pics.first.img.url}}');"
+            {% else %}
+            style="background-color:white;background-image: url('{% static reply.who.userextend.get_avatar_url %}');"
+            {% endif %}>
+            </div></a>
+        </div>
+        <div class="col-10 d-flex flex-column">
+            <p class="lead m-0 pl-1">{{reply.who.get_full_name}} {% if post.user == reply.who %}<small><span class="badge badge-primary">Author</span></small>{% endif %}</p>
+            <p class="text-muted pl-1"><small>{{reply.created_on|timesince}} ago</small></p>
+        </div>
+    </div>
+    <div class="card-body pt-0">
+        <p class="card-text mb-0">{{reply.content}}</p>
+        {% if reply.who == request.user or request.user == post.user %}
+            <div class="text-right text-xs"> 
+                <a href="#" onclick="remove_reply({{reply.pk}})" class="text-danger">Remove <i class="fas fa-trash ml-auto"></i></a>
+            </div>
+        {% endif %}
+    </div>
+</div>

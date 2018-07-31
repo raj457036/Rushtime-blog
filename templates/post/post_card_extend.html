@@ -1,4 +1,3 @@
-{% load static %}
 <div class="card border-0">
     <div class="card-header p-1">
         <div class="row m-0">
@@ -14,7 +13,7 @@
                         {% if profile_pic.img %}
                         {{profile_pic.img.url}}
                         {% else %}
-                        {% static 'registration/imgs/user.png' %}
+                        {% static user.userextend.get_avatar_url %}
                         {% endif %}"
                      alt="user" class="border post-user-img rounded-circle"></a>
                     <div class="flex-column justify-content-start ml-2">

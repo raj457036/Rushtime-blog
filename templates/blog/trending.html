@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Trending Posts &middot; RushTime Blogs{% endblock title %}
+{% block content %}
+{% include "blog/slider.html" with items=topics style="margin-top:40px" %}
+{% endblock content %}

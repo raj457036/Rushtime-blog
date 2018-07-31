@@ -28,10 +28,10 @@ var HtmlContents = {
                 </div>`,
     'ed-editor-space': `<div id="ed-space" contenteditable="true" autofocus='true'></div>`,
     'ed-floater' : `<div id="ed-float"></div>`,
-    'ed-fl-links': `<div class="btn-box">
-                        <input type="text" class="ed-input" id="ed-link">
-                        <button class="ed-btn ed-btn-white" id='ed-link-btn' type="button"><i class="fa fa-check"></i></button>
-                        <button class="ed-btn ed-btn-white" id='ed-unlink-btn' type="button"><i class="fa fa-times"></i></button>
+    'ed-fl-links': `<div class="d-flex flex-row align-item-center">
+                        <input type="text" class="form-control form-control-sm mr-1" id="ed-link">
+                        <button class="btn btn-light btn-sm mr-1" id='ed-link-btn' type="button"><i class="fa fa-check"></i></button>
+                        <button class="btn btn-light btn-sm" id='ed-unlink-btn' type="button"><i class="fa fa-times"></i></button>
                     </div>`,
     'ed-fl-btns': `<div class="btn-box">
                     <button class="ed-btn ed-btn-white" data-cmd="justifyLeft" aria-label="tooltip" aria-content='Align left' type="button"><i class="fa fa-align-left"></i></button>
@@ -136,6 +136,7 @@ class Editor {
         this.bbl.style.top = s.top+s.height+5+ 'px';
         this.bbl.style.left = (s.left-5)+'px';
         this.bbl.style.display = 'inline-block';
+        
     }
 
     // output

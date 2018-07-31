@@ -28,15 +28,21 @@
                             {% url 'registration:myprofile' %}
                             {% else %}
                             {% url 'registration:userprofile' pk=post.user.pk %}
-                            {% endif %}"
+                            {% endif %}" data-user='{{ post.user.username }}' onmouseover="pop(this)"
                      class="link-no-style">{{post.user.get_full_name}}</a> <span class="text-muted d-none d-md-inline text-capitalize">programmer by heart</span></p>
-                        <p class="post-since-time text-muted">about {{post.created_on|timesince}} ago</p>
+                        <p class="post-since-time text-muted p-0">about {{ post.created_on|timesince }} ago <span>&middot; {{ post.get_read_time }} min read</span></p>
+                        
                     </div>   
                 </div>
             </div>
             <div class="col-2">
                 <div class="d-flex justify-content-end">
-                    <button onclick="bookmark({{post.id}})" class="btn btn-outline-warning btn-sm
+                    {% if post.user == request.user %}
+                    <button onclick="draft({{post.id}}, '{{csrf_token}}')" class="btn btn-outline-info btn-sm mr-2 {% if post.draft %}active{% endif %}"
+                    title="Draft" id="draft_{{post.pk}}">{% if post.draft %} <i class="fas fa-lock"></i> {% else %} <i class="fas fa-unlock"></i> {% endif %}</button>
+                    {% endif %}
+
+                    <button onclick="bookmark({{post.id}})" class="btn btn-outline-success btn-sm
                     {% if post.pk in request.user.userextend.get_bookmarks %}
                     active
                     {% endif %}
@@ -61,7 +67,9 @@
     </a>     
     </div>
     <!-- footer -->
-    
+    <div id="share_panel-{{post.pk}}" class="px-1" style="display:none">
+        <div class="sharethis-inline-share-buttons my-2" data-url="{{ request.get_host }}{% url 'registration:post:detail' pk=post.pk %}"></div>
+    </div>
     <div class="card-footer py-1 px-0 d-flex align-items-center" style="height:30px">
         
         <div><button class="btn btn-sm mx-2 btn-outline-danger nofocus py-0
@@ -70,21 +78,19 @@
         
         <div><a href="{% url 'registration:post:detail' pk=post.pk %}#comment" class="btn btn-sm mx-2 btn-outline-info py-0" title="Comments"><i class="far fa-comment-alt"></i></a></div>
         
-        <div class="dropup">
-            <button class="btn btn-sm mx-2 btn-outline-primary dropdown-toggle notificon py-0" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Share">
-                <i class="fas fa-share"></i>
-            </button>
-            <div class="dropdown-menu" style="max-width:600px" aria-labelledby="dropdownMenuButton1">
-                <div class="sharethis-inline-share-buttons dropdown-item mw-100" data-url="{% url 'registration:post:detail' pk=post.pk %}"></div>
-            </div>
-        </div>
+        <button class="btn btn-sm mx-2 btn-outline-primary nofocus py-0" onclick="showShare('#share_panel-{{post.pk}}')" type="button" id="share_btn" title="Share"><i class="fas fa-share"></i></button>
+
         <div class="dropup ml-auto">
             <button class="btn btn-sm mx-2 btn-outline-dark dropdown-toggle notificon border-0 rounded-circle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="more">
                 <i class="fas fa-cog"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                {% if request.user == post.user %}
+                    
+                {% else %}
                 <a class="dropdown-item disable" href="#"><i class="fas fa-exclamation text-danger mr-1"></i> Report</a>
-                <a class="dropdown-item disable" href="#">in</a>
+                {% endif %}
+                
                 <a class="dropdown-item disable" href="#">beta</a>
                 {% if post.user == request.user and request.resolver_match.url_name == 'myprofile' %}
                 <a class="dropdown-item " href="{% url 'registration:post:delete' pk=post.pk %}"><i class="far fa-trash-alt"></i> Delete</a>

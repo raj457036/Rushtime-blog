@@ -1,54 +1,59 @@
 {% extends "base.html" %}
-
+{% load util_tags %}
+{% block class %}class="bg-1" style="background-image:url('{% get_random_img %}')"{% endblock class %}
 {% block content %}
 {% load static %}
 {% load widget_tweaks %}
-<div class="container-fluid bg-1 bg">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-12 d-flex justify-content-center">
-            <div class="card shadow mt-5" style="max-width:550px">
-                <h3 class="text-center my-1">Sign up here</h3>
-                <hr>
-                <div class="card-body">
+        <div class="col-12 d-flex justify-content-center p-4">
+            <div class="card shadow" style="width:700px">
+                <h3 class="text-center my-1 display-4">Sign up here</h3>
+                <hr class="m-1">
+                <div class="card-body p-0 pb-2">
                     <div class="card-text">
                         {% if form.non_field_errors %}
                             {% for error in form.non_field_errors %}
                                 <div class='alert alert-danger p-1'>{{error}}</div>
                             {% endfor %}
                         {% endif %}
-                        <form method="POST">
+                        <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             {% for field in form %}
                             <div class="form-group row  p-0 m-0 m-md-2">
-                                <div class="col-sm-3 col-form-label">{{field.label_tag}}</div>
-                                <div class="col-sm-9">
-                                    {% if field.errors %}
-                                        {% for error in field.errors %}
-                                            <div class='alert alert-danger p-1'>{{error}}</div>
-                                        {% endfor %}
-                                    {% endif %}
-        
-                                    {% render_field field|append_attr:'class:form-control form-control-sm' data-toggle='popover' data-trigger="focus" data-content=field.help_text|safe %}
-                                    {% if field.help_text %}
-                                    <small class="form-text text-muted d-none d-md-inline">
-                                        {% autoescape off %}{{field.help_text}}{% endautoescape %}
-                                    </small>
-                                    {% endif %} 
-                                </div>
-                                
+                                {% if forloop.counter != 8 %}
+                                    <div class="col-sm-3 col-form-label">{{field.label_tag}}</div>
+                                    <div class="col-sm-9">
+                                        {% if field.errors %}
+                                            {% for error in field.errors %}
+                                                <div class='alert alert-danger p-1'>{{error}}</div>
+                                            {% endfor %}
+                                        {% endif %}
+            
+                                        {% render_field field|append_attr:'class:form-control form-control-sm' data-placement='top' data-toggle='tooltip' data-trigger="hover" data-title=field.help_text|safe data-html="true" %}
+                                    </div> 
+                                {% else %}
+                                    <div id="img_uploader" class="col-12 d-flex p-3 my-2">
+                                        {% render_field field|append_attr:'hidden' %}
+                                        <div class="avatar_block inner_block d-flex w-50 rounded-left" data-toggle="modal" data-target="#AvatarSelect"><div class="m-auto text-center"><i class="fas fa-user-astronaut fa-2x"></i><small class="d-block">Choose Avatar</small></div></div>
+                                        <label for="{{field.auto_id}}" class="w-50 h-100"> <div class="rounded-right profile_block inner_block d-flex"><div class="m-auto text-center"><i class="fas fa-download m-auto fa-2x"></i><small class="d-block">Choose profile picture</small></div></div></label>
+                                    </div>
+                                    
+                                {% endif %} 
                             </div>
                             {% endfor %}
-                            <div class="form-group form-check row mt-1">
-                                <div class="col-12">
-                                        <input type="checkbox" class="form-check-input" id="Remember">
-                                        <label class="form-check-label" for="Remember">
-                                            Accept Terms &amp Conditions
-                                        </label>
-                                </div>
+                            <div class="form-group text-center mt-2">
+                                <input type="checkbox" class="form-check-input" id="Remember">
+                                <label class="form-check-label" for="Remember">
+                                    <small>Accept <a href="#">Terms &amp; Conditions</a></small>
+                                </label>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-sm">Sign up</button>
-                            or 
-                            <a class="btn btn-secondary btn-sm" href="{% url 'user_login' %}">Login</a>
+
+                            <div class="d-block text-center">
+                                <button type="submit" class="btn btn-primary px-lg-5"><small class="font-weight-bold">Register</small></button>
+                                <span class="text-muted">or</span> 
+                                <a class="btn btn-success font-weight-bold px-lg-5" href="{% url 'user_login' %}"><small class="font-weight-bold">Login</small></a>
+                            </div>
         
                         </form>
                     </div>
@@ -57,4 +62,9 @@
         </div>
     </div>
 </div>
+{% include "blog/avatar_select_model.html" %}
 {% endblock content %}
+
+{% block op_script %}
+<script src="{% static 'registration/js/signup.js' %}"></script>
+{% endblock op_script %}
