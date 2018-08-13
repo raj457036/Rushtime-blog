@@ -8,7 +8,6 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ('visibility','draft','user','created_on','post_topic')
 
 admin.site.register(models.Post, PostAdmin)
-admin.site.register(models.Topic, )
 admin.site.register(models.Comment, )
 admin.site.register(models.reply, )
 admin.site.register(models.PostLikers, )

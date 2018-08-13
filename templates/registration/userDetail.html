@@ -35,8 +35,15 @@
             </h2>
             <cite>{{user}}</cite>
             <blockquote class="blockquote text-center">
-                <p class="mb-0">{{user.userextend.aboutMe}}</p>
-                <footer class="blockquote-footer">{{user}}</footer>
+                    <small class="mb-0">{{user.userextend.aboutMe}}</small>
+                    <footer class="d-block">
+                        {% if user.userextend.facebook %}
+                        <a href="{{request.user.userextend.facebook}}" class="btn btn-sm" style="color:#4867aa" target="_blank"><i class="fab fa-2x fa-facebook-square"></i></a>
+                        {% endif %}
+                        {% if user.userextend.twitter %}
+                        <a href="{{request.user.userextend.twitter}}" class="btn btn-sm" style="color:#1da1f2" target="_blank"><i class="fab fa-2x fa-twitter-square"></i></a>
+                        {% endif %}
+                    </footer>
             </blockquote>
             <div class="row p-2">
             {% if user.userextend.protected == '3' or user == request.user or user.userextend.protected == '2' and user in request.user.userextend.get_following %}

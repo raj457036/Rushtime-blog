@@ -1,16 +1,12 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% load static %}
-{% block op_style %}
-<link rel="stylesheet" href="{% static 'css/Blackedit.css' %}">
-{% endblock op_style %}
-
 {% block title %}
 Create a new Post &middot; {{request.user}}
 {% endblock title %}
 
 {% block content %}
-<div class="container">
+<div class="container pb-2">
     <h3 class="text-center mt-5">Create a Post</h3>
     <form action="" method="post" id="post_form" enctype="multipart/form-data">
         {% csrf_token %}
@@ -21,7 +17,8 @@ Create a new Post &middot; {{request.user}}
                 {% render_field field|append_attr:"class:form-control form-control-sm"%}
             </div>
             <div class="form-group">
-                <div id="editor" class="border d-block"></div>
+                {% comment %} <div id="editor" class="border-0 d-none d-lg-block ed-editor"></div> {% endcomment %}
+                <div id="editor-mobile" class="border-0 d-block"></div>
             </div>
             {% elif forloop.counter == 4 %}
             <div hidden>
@@ -36,6 +33,7 @@ Create a new Post &middot; {{request.user}}
             <div class="form-group">
                 {{field.label_tag}}
                 {% render_field field|append_attr:"class:form-control form-control-sm" %}
+                <small class="text-muted">{{field.help_text}}</small>
             </div>
             {% endif %}
         {% endfor %}
@@ -47,9 +45,21 @@ Create a new Post &middot; {{request.user}}
 
 {% block op_script %}
 <script src="{% static 'post/js/post_create.js' %}"></script>
-<script src="{% static 'js/Blackedit.js' %}"></script>
+{% comment %} for high performance device {% endcomment %}
+{% comment %} <script src="{% static 'js/blackedit.min.js' %}"></script>  {% endcomment %}
+{% comment %} for low performance device {% endcomment %}
+<script src="{% static 'js/editor-class.js' %}"></script>
 <script>
-    var ed = new Editor('editor','id_content');
-    ed.init(); 
+    //var settings = {
+    //    'smaller_device':false,
+    //    'performance_mode':false, //higher the performance less the functionality
+    //    'device_min_width': 600,
+    //};
+    //var ed = new Editor('editor','id_content');
+    //ed.settings = settings;
+    //ed.init();
+
+    var be = new BlackEdit('editor-mobile', 'id_content');
+    be.init(auto_output=true);
 </script>
 {% endblock op_script %}

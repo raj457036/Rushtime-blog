@@ -3,9 +3,9 @@
 {% block title %}
 {{post.title}} &middot; {{post.user}} : Blog
 {% endblock title %}
-
+{% block op_style %} <link rel="stylesheet" href="{% static 'post/css/post-detail.css' %}"> {% endblock op_style %}
 {% block content %}
-{% include "blog/slider.html" with items=post.user.post_topics.all style="margin-top:40px;" %}
+{% include "blog/slider.html" with items=topics style="margin-top:40px;" current=post.get_post_topic_display %}
 <div class="container-fluid px-0"> 
     {% include "post/post_extend.html" %}
 </div>

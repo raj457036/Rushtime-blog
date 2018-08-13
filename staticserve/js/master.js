@@ -72,7 +72,7 @@ function get_template(name, since,about, img_url, top_stories, followers_num) {
 $(document).ready(function(){
   $('#left-toggle').click(function(){
     $('#left-bar').toggle('fast','linear');
-    
+    if (window.innerWidth < 400) {$(".navbar-toggler").toggle();}
   });
   // for search api
     var obj = {
@@ -147,6 +147,7 @@ function pop(e) {
     method:'GET',
     data:{'username':$('#'+e.id).attr('data-user')},
     success: function(re) {
+      console.log(re)
       obj = { 
         html:true,
         content: get_template(re.name, re.joined, re.about, re.profile_pic, re["top-posts"], re.followers),
@@ -156,9 +157,7 @@ function pop(e) {
         template:`<div class="popover" role="tooltip">
                     <div class="arrow"></div>
                     <h3 class="popover-header"></h3>
-                    <div class="popover-body">
-                    
-                    </div>
+                    <div class="popover-body"></div>
                   </div>`
         }
         $('#'+e.id).popover(obj);
@@ -169,6 +168,7 @@ function pop(e) {
     }
   });
 }
+
 // for follow api
 function follow(id, csrf) {
   $.ajax({
@@ -195,8 +195,7 @@ function bookmark(id,status) {
       $(`#bookmark_${id}`).html('<i class="fas fa-spin fa-spinner"></i>')
     },
     success: function(re) {
-      $(`#bookmark_${id}`).html('<i class="far fa-bookmark"></i>')
-      re.status ? $(`#bookmark_${id}`).addClass('active').attr('title','Remove Bookmark') : $(`#bookmark_${id}`).removeClass('active').attr('title','add Bookmark');
+      re.status ? $(`#bookmark_${id}`).html('<i class="fas fa-bookmark"></i>').attr('title','Remove Bookmark') : $(`#bookmark_${id}`).html('<i class="far fa-bookmark"></i>').attr('title','add Bookmark');
       if(status) {location.reload();}
     },
     error: function(re) {
@@ -216,7 +215,7 @@ function draft(id, csrf) {
     },
     success: function(re) {
       $(`#draft_${id}`).html('')
-      re.status ? $(`#draft_${id}`).addClass('active').html('<i class="fas fa-lock"></i>') : $(`#draft_${id}`).removeClass('active').html('<i class="fas fa-unlock"></i>');
+      re.status ? $(`#draft_${id}`).html('<i class="fas fa-lock"></i> Draft') : $(`#draft_${id}`).html('<i class="fas fa-unlock"></i> Live');
     },
     error: function(re) {
         console.log('connection problem!');

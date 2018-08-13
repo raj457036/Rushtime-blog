@@ -15,7 +15,7 @@
                 {% if post.user.userextend.get_profile_pics|length > 0 %}
                     style="background-image: url('{{post.user.userextend.get_profile_pics.first.img.url}}');"
                 {% else %}
-                    style="background-color:white;background-image: url('{% static user.userextend.get_avatar_url %}');"
+                    style="background-color:white;background-image: url('{% static post.user.userextend.get_avatar_url %}');"
                 {% endif %}
                 ></div>
                 </a>
@@ -25,6 +25,7 @@
                 </div>
                 
                 <div class="ml-auto">
+                        {% if request.user == post.user %}
                         <span class='text-muted' id="draft_{{post.pk}}">
                             {% if post.draft %}
                             <i class="fas fa-lock text-muted"></i> Draft
@@ -32,16 +33,19 @@
                             <i class="fas fa-unlock text-info"></i> Live
                             {% endif %}
                         </span>
-                        <button onclick="bookmark({{post.id}})" class="btn btn-outline-info btn-sm
-                        {% if post.pk in request.user.userextend.get_bookmarks %}
-                        active
                         {% endif %}
-                        " title="Bookmark" id="bookmark_{{post.pk}}"><i class="far fa-bookmark"></i></button> 
+                        <a onclick="bookmark({{post.id}})" class="text-light cursor" title="Bookmark" id="bookmark_{{post.pk}}"> 
+                            {% if post.pk in request.user.userextend.get_bookmarks %}
+                            <i class="fas fa-bookmark"></i>
+                            {% else %}
+                            <i class="far fa-bookmark"></i>
+                            {% endif %}
+                        </a> 
                     
 
                 <!-- dropdown -->
                     <div class="dropdown d-inline-block">
-                        <a class="btn btn-outline-light dropdown-toggle notificon btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="text-white dropdown-toggle notificon btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v"></i>
                         </a>
                         
@@ -60,9 +64,9 @@
         
         <div class="card-body pb-0 z-back">
             <a href="{% url 'registration:post:detail' pk=post.pk %}" class="text-muted">
-                <h5 class="card-title">{{post.title}}</h5>
-                <p class="card-text m-0 font-italic border-left pl-1">{{post.sub_title}}</p>
-                <p class="card-text m-0">{{post.get_short_story}}</p>
+                <h5 class="card-title font-secondary">{{post.title}}</h5>
+                <p class="card-text font-italic border-left pl-1 py-1 mb-1">{{post.sub_title}}</p>
+                <p class="card-text m-0 font-main">{{post.get_short_story}}</p>
             </a>
             <p class="card-text">
                 <div class="text-center">

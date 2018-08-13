@@ -9,21 +9,7 @@ from cloudinary import models as cmodels
 import cloudinary
 from django.utils.html import strip_tags
 
-POST_TOPICS = ((0, 'PERSONAL'),(1, 'FUTURE'), (2, 'CULTURE'), (3, 'TECH'), (4, 'ENTREPRENEURSHIP'), (5, 'SELF'), (6, 'POLITICS'), (7, 'DESIGN'), (8, 'SCIENCE'), (9, 'POPULAR'))
-
-
-
-class Topic(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='post_topics')
-    name = models.CharField(max_length=10)
-
-    def __str__(self):
-            return self.name
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_default_topic(sender, instance, created, **kwargs):
-    if created:
-        Topic.objects.create(user = instance, name='Everyday')
+POST_TOPICS = (('0', 'PERSONAL'),('1', 'FUTURE'), ('2', 'CULTURE'), ('3', 'TECH'), ('4', 'ENTREPRENEURSHIP'), ('5', 'SELF'), ('6', 'POLITICS'), ('7', 'DESIGN'), ('8', 'SCIENCE'), ('9', 'POPULAR'))
 
 
 
@@ -46,8 +32,8 @@ class Post(models.Model):
     upvote = models.PositiveIntegerField(default=0)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     visibility = models.CharField(max_length=1, choices=POST_VISIBILITY_CHOICE, default='1')
-    post_topic = models.ForeignKey(Topic, on_delete=models.DO_NOTHING, default=1, related_name='posts')
-
+    post_tags = models.CharField(max_length=255, help_text='Tags seperated with a space')
+    post_topic= models.CharField(max_length=1, choices=POST_TOPICS, default=0)
     def __str__(self):
         return self.title
 

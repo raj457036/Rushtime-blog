@@ -30,7 +30,9 @@ class TrendingPosts(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['topics'] = "FUTURE,CULTURE,TECH,ENTREPRENEURSHIP,SELF,POLITICS,DESIGN,SCIENCE,POPULAR,MORE".split(',')
+        ctx['topics'] = "FUTURE,CULTURE,TECH,ENTREPRENEURSHIP,PERSONAL,POLITICS,DESIGN,SCIENCE,POPULAR,MORE".split(',')
+
+        ctx['topPost'] = Post.objects.all()[:3]
         return ctx
 
 @login_required
@@ -73,9 +75,11 @@ def follow_user(request):
         u = User.objects.get(pk=request.POST['user_id'])
         if u in request.user.userextend.following.all():
             request.user.userextend.following.remove(u)
+            u.userextend.follower.remove(request.user)
             return JsonResponse({'status':False})
         else:
             request.user.userextend.following.add(u)
+            u.userextend.follower.add(request.user)
             return JsonResponse({'status':True})
     else:
         return JsonResponse({'status': None})

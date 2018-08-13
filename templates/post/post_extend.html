@@ -6,28 +6,29 @@
     <div class="row no-gutters" >
         <div class="col-md-5 d-flex">
             <div class="flex-column my-auto px-5 px-lg-0">
-                <h1 class="detail-title display-4 play-font">{{post.title}}</h1>
-                <p class="lead text-muted play-font">{{post.sub_title}}</p>
+                <h1 class="detail-title display-f font-secondary">{{post.title}}</h1>
+                <p class="lead text-muted font-main">{{post.sub_title}}</p>
                 <div class="border-0 card pt-2" style="max-width: 18rem;">
                     <div class="card-body p-0 row">
                         <div class="col-3">
-                            <div class="post-extend-user-img rounded-circle border-info border-top border-bottom" data-user='{{ post.user.username }}' onmouseover="pop(this)"
-                            {% if post.user.userextend.get_profile_pics|length > 0 %}
-                            style="background-image: url('{{post.user.userextend.get_profile_pics.first.img.url}}');"
-                            {% else %}
-                            style="background-color:white;background-image: url('{% static user.userextend.get_avatar_url %}');"
-                            {% endif %}>
-                            </div>
-                        </div>
-                        <div class="col-9 py-2">
-                            <p class="d-block m-0"><small>
-                                <a href="
+                            <a href="
                                 {% if post.user == request.user %}
                                     {% url 'registration:myprofile' %}
                                 {% else %}
                                     {% url 'registration:userprofile' pk=post.user.pk %}
                                 {% endif %}" class="text-dark hover-line" id="post_user_link" data-user='{{ post.user.username }}' onmouseover="pop(this)">
-                                {{post.user.get_full_name}}</a>
+                                <div class="post-extend-user-img rounded-circle border-info border-top border-bottom" data-user='{{ post.user.username }}' onmouseover="pop(this)"
+                                {% if post.user.userextend.get_profile_pics|length > 0 %}
+                                style="background-image: url('{{post.user.userextend.get_profile_pics.first.img.url}}');"
+                                {% else %}
+                                style="background-color:white;background-image: url('{% static post.user.userextend.get_avatar_url %}');"
+                                {% endif %}>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-9 py-2">
+                            <p class="d-block m-0"><small>
+                                {{post.user.get_full_name}}
                                 {% if not me %}
                                 <input type="button" id="follow_btn" onclick="follow({{post.user.pk}},'{{ csrf_token }}')"
                                 {% if post.user in request.user.userextend.get_following %}
@@ -45,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5 offset-md-1 d-lg-flex">
+        <div class="col-md-5 offset-md-1 ">
             {% if post.head_img %}
             <img src="{{post.head_img.url}}" alt="" class="img-fluid float-right">
             {% endif %}
@@ -57,7 +58,7 @@
 <!-- content -->
 <div class="row">
     <div class="col-12">
-        <div class="container mt-3 mb-5 first-big" id="post-content">
+        <div class="container mt-3 mb-5 first-big font-main" id="post-content">
             <div class="px-2">
                 {% autoescape off %}  {{post.content}} {% endautoescape %}
             </div>
@@ -94,15 +95,15 @@
         <div class="sharethis-inline-share-buttons my-2" data-url="{{ request.get_host }}{% url 'registration:post:detail' pk=post.pk %}"></div>
     </div>
     <div class="mx-auto">
-        <button class="btn btn-sm mr-2 btn-outline-info nofocus px-5 py-0
+        <button class="btn btn-sm mr-2 btn-outline-info nofocus px-4 py-0
         {% if request.user.id in post.all_likers %} active {% endif %}" 
         id="like_{{post.pk}}" title="Like it" onclick="likeit({{post.pk}})"><i class="far fa-heart" title="Like it"></i></button>
 
-        <button onclick="bookmark({{post.id}})" class="btn btn-sm mr-2 btn-outline-info nofocus px-5 py-0
+        <button onclick="bookmark({{post.id}})" class="btn btn-sm mr-2 btn-outline-info nofocus px-4 py-0
         {% if post.pk in request.user.userextend.get_bookmarks %}
         active{% endif %}" title="Bookmark" id="bookmark_{{post.id}}"><i class="far fa-bookmark"></i></button>
         
-        <button class="btn btn-sm mr-2 btn-outline-info nofocus px-5 py-0" onclick="showShare('#share_panel-{{post.pk}}')" type="button" id="share_btn" title="Share"><i class="fas fa-share"></i></button>    
+        <button class="btn btn-sm mr-2 btn-outline-info nofocus px-4 py-0" onclick="showShare('#share_panel-{{post.pk}}')" type="button" id="share_btn" title="Share"><i class="fas fa-share"></i></button>    
     </div>
 </div>
 

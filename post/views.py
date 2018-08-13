@@ -4,11 +4,12 @@ from django.contrib.auth.decorators import login_required
 from . import models
 from registration.models import Images, UserExtend
 from django.db.models import Q,F
-from django.views.generic import DetailView, CreateView, DeleteView
+from django.views.generic import DetailView, CreateView, DeleteView, UpdateView
+from .forms import PostCreateForm
 from notifiy.models import Notice
 from django.http import JsonResponse
 # Create your views here.
-
+Post_Topics_List = {'0': 'PERSONAL', '1': 'FUTURE', '2': 'CULTURE', '3': 'TECH', '4': 'ENTREPRENEURSHIP', '5': 'SELF', '6': 'POLITICS', '7': 'DESIGN', '8': 'SCIENCE', '9': 'POPULAR'}
 class PostDetailView(LoginRequiredMixin, DetailView):
     model = models.Post
     template_name = 'post/post_detail.html'
@@ -18,7 +19,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         g = self.request.GET.get('read', False)
         sl = self.object.user.userextend.protected
         ctx = super().get_context_data(**kwargs)
-        print(sl)
+        ctx['topics'] = [Post_Topics_List[t] for t in self.object.user.post_set.values_list('post_topic', flat=True).distinct()]
         if g:
             n = Notice.objects.get(pk=g)
             n.viewed = True
@@ -42,13 +43,15 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = models.Post
-    fields = ['title','sub_title','head_img','content','draft','visibility','post_topic']
+    form_class = PostCreateForm
     template_name = 'post/post_create.html'
     success_url = '/'
     initial = {}
 
     def get_context_data(self, **kwargs):
-        self.initial = {'visibility':self.request.user.userextend.Post_Type}
+        self.user = self.request.user
+        self.initial = {
+            'visibility':self.request.user.userextend.Post_Type}
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
@@ -70,6 +73,22 @@ def PostLike(request):
     p.refresh_from_db()
     return JsonResponse(data={'status':created,'likes':int(p.upvote)})
 
+
+class PostUpdateView(UpdateView):
+    model = models.Post
+    # fields = ['title','sub_title','head_img','content','draft','visibility']
+    form_class = PostCreateForm
+    template_name = 'post/post_update.html'
+    success_url = '/'
+    initial = {}
+
+    def get_context_data(self, **kwargs):
+        self.initial = {'visibility':self.request.user.userextend.Post_Type}
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 class PostDeleteView(DeleteView):
     template_name = 'post/delete_post.html'

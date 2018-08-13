@@ -30,11 +30,17 @@ class UserExtend(models.Model):
     gender = models.CharField(max_length=1, choices=genders)
     aboutMe  = models.CharField(max_length=255, blank=True)
     avatar = models.SmallIntegerField(default=1)
+    follower = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followers', blank=True)  #userextend.followers.all
+    following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followings', blank=True) #userextend.following.all
+    
+    facebook = models.URLField(verbose_name='facebook url', blank=True)
+    twitter  = models.URLField(verbose_name='twitter url', blank=True)
+    
     # settings
     protected = models.CharField(max_length=1, choices=protection_level, default='1')
     Post_Type = models.CharField(max_length=1, choices=post_type_choice, default='1')
-    follower = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followers', blank=True)  #userextend.followers.all
-    following = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='followings', blank=True) #userextend.following.all
+    
+    
     def __str__(self):
         return self.user.username
 

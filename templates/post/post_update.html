@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %}
+Create a new Post &middot; {{request.user}}
+{% endblock title %}
+
+{% block content %}
+<style>
+    .editor-mobile-space {
+        height:600px;
+    }
+</style>
+<div class="container pb-2">
+    <h3 class="text-center mt-5">Create a Post</h3>
+    <form action="" method="post" id="post_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            {% if forloop.counter == 3 %}
+            <div class="form-group">
+                {{field.label_tag}}
+                {% render_field field|append_attr:"class:form-control form-control-sm"%}
+            </div>
+            <div class="form-group">
+                {% comment %} <div id="editor" class="border-0 d-none d-lg-block ed-editor"></div> {% endcomment %}
+                <div id="editor-mobile" class="border-0 d-block"></div>
+            </div>
+            {% elif forloop.counter == 4 %}
+            <div hidden>
+                {{field}}
+            </div>
+            {% elif forloop.counter == 5 %}
+            <div class="form-group">
+                {{field.label_tag}}
+                {% render_field field|append_attr:"class:form-control d-inline-block mx-2" style="width:auto" %} <small class="text-muted">Make this post draft and edit it later.</small>
+            </div>
+            {% else %}
+            <div class="form-group">
+                {{field.label_tag}}
+                {% render_field field|append_attr:"class:form-control form-control-sm" %}
+                <small class="text-muted">{{field.help_text}}</small>
+            </div>
+            {% endif %}
+        {% endfor %}
+        
+        <input class="btn btn-primary" type="submit" value="Update" />
+    </form>
+    
+</div>
+{% endblock content %}
+
+{% block op_script %}
+<script src="{% static 'post/js/post_create.js' %}"></script>
+{% comment %} for high performance device {% endcomment %}
+{% comment %} <script src="{% static 'js/blackedit.min.js' %}"></script>  {% endcomment %}
+{% comment %} for low performance device {% endcomment %}
+<script src="{% static 'js/editor-class.js' %}"></script>
+<script>
+    //var settings = {
+    //    'smaller_device':false,
+    //    'performance_mode':false, //higher the performance less the functionality
+    //    'device_min_width': 600,
+    //};
+    //var ed = new Editor('editor','id_content');
+    //ed.settings = settings;
+    //ed.init();
+
+    var be = new BlackEdit('editor-mobile', 'id_content');
+    be.init(auto_output=true,fill_output=true);
+
+</script>
+{% endblock op_script %}

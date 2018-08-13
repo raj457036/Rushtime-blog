@@ -1,14 +1,11 @@
 body,html {overflow-x: hidden;height: 100%}
+
 .popover-body {padding:0}
 .pop-img {
     object-fit: cover;
     object-position: top;
 }
-.play-font {font-family: 'Playfair Display', serif;}
-.lora-font {font-family: 'Lora', serif;}
-.san-serif-font {font-family: Arial, Helvetica, sans-serif;}
 
-#post-content {font-family: 'Lora', serif;}
 .detail-title {font-weight: 700;}
 
 .st-logo {display: none}
@@ -19,7 +16,7 @@ body,html {overflow-x: hidden;height: 100%}
 .btn.active:focus {outline: none;}
 
 
-.dropdown-toggle.notificon::after {
+.dropdown-toggle::after {
 display: none;
 }
 .post-extend-user-img {
@@ -331,15 +328,15 @@ label[for=''] {
 .text-fluid p {
 
 }
-.text-fluid .display-5{
-    
+.display-f{
+    font-size: 3rem;
 }
 @media (min-width: 768px) { 
     .text-fluid p {
 
     }
-    .text-fluid .display-5{
-        
+    .display-f{
+        font-size: 3.5rem;
     }
 }
 
@@ -347,17 +344,17 @@ label[for=''] {
     .text-fluid {
         
     }
-    .text-fluid .display-5{
-        
+    .display-f{
+        font-size: 4.5rem;
     }
 }
 
-@media (min-width: 1200px) { 
+@media (min-width: 1300px) { 
     .text-fluid {
         
     }
-    .text-fluid .display-5{
-        
+    .display-f{
+        font-size: 6rem;
     }
 }
 
@@ -382,6 +379,7 @@ a:link {text-decoration: none }
     box-sizing: border-box;
     overflow-x: auto;
     overflow-y: hidden;
+    z-index: 1019;
 }
 
 .slider a {
@@ -396,6 +394,28 @@ a:link {text-decoration: none }
 }
 
 .slider a.active {
-    background:#17a2b8;
-    color:white;
+    border-bottom:2px solid #17a2b8;
+    color:#17a2b8;
 }
+
+
+
+.font-main {font-family: 'Roboto Slab', serif;}
+.font-secondary {font-family: 'Vidaloka', serif;}
+
+.navbar-brand {text-shadow:2px 1px rgba(0,0,0,.15);}
+
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+::-moz-selection { /* Code for Firefox */
+    background: #1dc3dd;
+}
+
+::selection {
+    background: #1dc3dd;
+}
+
+.cursor {cursor: pointer;}

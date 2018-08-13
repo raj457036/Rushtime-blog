@@ -8,7 +8,7 @@
     <div class="banner_container">
         <img src="{% get_random_img %}" class="banner_img img-fluid" alt="" srcset="">
     </div>
-    <div class="container user_container">
+    <div class="container user_container pb-2">
         <div class="d-flex justify-content-center detail_bar">
             <img src="
             {% if request.user.userextend.get_profile_pics|length > 0 %}
@@ -22,8 +22,15 @@
             <h2 class="display-4">{{request.user.get_full_name}} <a href="{% url 'registration:updateprofile' pk=request.user.pk %}" style="font-size:15px;"><i class="fas fa-cog"></i></a></h2>
             <cite>{{user}}</cite>
             <blockquote class="blockquote text-center">
-                <p class="mb-0">{{request.user.userextend.aboutMe}}</p>
-                <footer class="blockquote-footer">{{user}}</footer>
+                <small class="mb-0">{{request.user.userextend.aboutMe}}</small>
+                <footer class="d-block">
+                    {% if request.user.userextend.facebook %}
+                    <a href="{{request.user.userextend.facebook}}" class="btn btn-sm" style="color:#4867aa" target="_blank"><i class="fab fa-2x fa-facebook-square"></i></a>
+                    {% endif %}
+                    {% if request.user.userextend.twitter %}
+                    <a href="{{request.user.userextend.twitter}}" class="btn btn-sm" style="color:#1da1f2" target="_blank"><i class="fab fa-2x fa-twitter-square"></i></a>
+                    {% endif %}
+                </footer>
             </blockquote>
             <div class="row p-2">
             {% if user == request.user %}

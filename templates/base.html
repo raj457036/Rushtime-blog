@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     {% load static %}
+    <style>#load{width:100%;height:100%;position:fixed;z-index:9999;background:url("{% static 'registration/imgs/loaders/audio.svg' %}") no-repeat center center #34919f; }</style>
     <meta charset="UTF-8">
     <meta name="theme-color" content="#17a2b8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no,maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Playfair|Lora" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab|Vidaloka" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">    <link rel="stylesheet" href="{% static 'css/master.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
@@ -17,11 +18,15 @@
 <body {% block class %}{% endblock class %}>
     {% include "blog/navbar.html" %}
     {% block navbar %}{% endblock navbar %}
-    {% if request.user.is_authenticated %}
-        {% include "sidebar.html" %}
-    {% endif %}
-    {% block content %}{% endblock content %}
-    {% block footer %}{% endblock footer %}
+    <div id="load"></div>
+    <div id="contents"> 
+        {% if request.user.is_authenticated %}
+            {% include "sidebar.html" %}
+        {% endif %}
+        {% block content %}{% endblock content %}
+        {% block footer %}{% endblock footer %}
+    </div>
+    <script>document.onreadystatechange=function(){var e=document.readyState;"interactive"==e?document.getElementById("contents").style.visibility="hidden":"complete"==e&&setTimeout(function(){document.getElementById("interactive"),document.getElementById("load").style.visibility="hidden",document.getElementById("contents").style.visibility="visible"},500)};</script>
     <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=5b4b49914a104f0011ca68b3&product=inline-share-buttons' async='async'></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -30,4 +35,3 @@
     {% block op_script %}{% endblock op_script %}
 </body>
 </html>
-

@@ -1,7 +1,7 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-info py-0 pb-1 pb-lg-0 fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-info font-main py-0 pb-1 pb-lg-0 fixed-top">
     <i class="fas fa-bars" id="left-toggle"></i>
-    <a class="navbar-brand" href="{% url 'home' %}">
+    <a class="navbar-brand font-secondary" href="{% url 'home' %}">
             &nbsp; <i>Rush</i>Time <small>Blogs</small></a>
     <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fa fa-bars"></i>
@@ -20,13 +20,13 @@
             </div>
             <ul class="navbar-nav ml-lg-auto flex-shrink-1 text-sm">
                 <li class="nav-item">
-                    <a class="nav-link text-center" href="{% url 'registration:post:new' %}" ><i class="fa fa-plus" title="New Post"></i></a>
+                    <a class="nav-link text-center" href="{% url 'registration:post:new' %}" ><span class="d-md-none">New Post </span>  <i class="fa fa-plus" title="New Post"></i></a>
                 </li>
                 {% if request.user.is_authenticated %}
                 {% comment %} notification panel {% endcomment %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link no-carret dropdown-toggle text-center notificon" href="#" id="notificon" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-bell"></i>
+                    <a class="nav-link dropdown-toggle text-center" href="#" id="notificon" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-md-none">Notifications </span> <i class="fa fa-bell"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" style="max-height:400px; overflow-y: auto; overflow-x:hidden;" aria-labelledby="notificon">
                         <a class="dropdown-item py-1 px-1 bg-light my-1" href="{% url 'registration:myprofile' %}">
@@ -43,14 +43,13 @@
                     {% if request.user.is_authenticated %}
                        Hi, {{request.user.get_full_name}}
                     {% else %}
-                        Login/Signup
+                        Login/Signup 
                     {% endif %}
                     <i class="fa fa-user"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'registration:myprofile' %}">Profile</a>
                     <a class="dropdown-item" href="#">New Post </a>
-                    <a class="dropdown-item" href="#">Your Rushers</a>
                     <div class="dropdown-divider"></div>
                     {% if request.user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'user_logout' %}">Logout <i class="fa fa-sign-out"></i></a>

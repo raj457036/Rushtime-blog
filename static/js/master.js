@@ -72,7 +72,7 @@ function get_template(name, since,about, img_url, top_stories, followers_num) {
 $(document).ready(function(){
   $('#left-toggle').click(function(){
     $('#left-bar').toggle('fast','linear');
-    
+    if (window.innerWidth < 400) {$(".navbar-toggler").toggle();}
   });
   // for search api
     var obj = {
@@ -140,13 +140,14 @@ $(document).ready(function(){
 
 function pop(e) {
   $('[data-user]').not(this).popover('hide');
-  $('.container-fluid,.container').click(function(ev){$('#'+e.id).popover('hide')});
+  $('.container-fluid, .container').click(function(ev){$('#'+e.id).popover('hide')});
   let obj;
   $.ajax({
     url:'/api/userdetail',
     method:'GET',
     data:{'username':$('#'+e.id).attr('data-user')},
     success: function(re) {
+      console.log(re)
       obj = { 
         html:true,
         content: get_template(re.name, re.joined, re.about, re.profile_pic, re["top-posts"], re.followers),
@@ -156,9 +157,7 @@ function pop(e) {
         template:`<div class="popover" role="tooltip">
                     <div class="arrow"></div>
                     <h3 class="popover-header"></h3>
-                    <div class="popover-body">
-                    
-                    </div>
+                    <div class="popover-body"></div>
                   </div>`
         }
         $('#'+e.id).popover(obj);
@@ -196,8 +195,7 @@ function bookmark(id,status) {
       $(`#bookmark_${id}`).html('<i class="fas fa-spin fa-spinner"></i>')
     },
     success: function(re) {
-      $(`#bookmark_${id}`).html('<i class="far fa-bookmark"></i>')
-      re.status ? $(`#bookmark_${id}`).addClass('active').attr('title','Remove Bookmark') : $(`#bookmark_${id}`).removeClass('active').attr('title','add Bookmark');
+      re.status ? $(`#bookmark_${id}`).html('<i class="fas fa-bookmark"></i>').attr('title','Remove Bookmark') : $(`#bookmark_${id}`).html('<i class="far fa-bookmark"></i>').attr('title','add Bookmark');
       if(status) {location.reload();}
     },
     error: function(re) {
@@ -299,27 +297,3 @@ function remove_reply(id) {
     }
   })
 }
-
-
-// var increasing = 0;
-// $('body').on('scroll', function(ev){
-  
-//   var ele = $('#slider-1')
-//   var pos = $(this).scrollTop();
-  
-//   if (pos != 0) {
-//     if (increasing < pos) {
-//       increasing = pos;
-//       ele.css({'position':'sticky','margin-top':'0px'})
-//     }
-//     else{
-//       increasing = pos;
-//       ele.css({'position':'fixed','margin-top':'40px'})
-//     }
-//   }
-//   else {
-//     increasing = pos;
-//     ele.css({'position':'sticky','margin-top':'0px'})
-//   }
-
-// })
