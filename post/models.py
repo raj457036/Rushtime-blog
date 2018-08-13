@@ -33,7 +33,7 @@ class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     visibility = models.CharField(max_length=1, choices=POST_VISIBILITY_CHOICE, default='1')
     post_tags = models.CharField(max_length=255, help_text='Tags seperated with a space')
-    post_topic= models.CharField(max_length=1, choices=POST_TOPICS, default=0)
+    post_topic= models.CharField(max_length=1, choices=POST_TOPICS, default='0')
     def __str__(self):
         return self.title
 
